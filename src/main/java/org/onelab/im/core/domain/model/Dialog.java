@@ -18,10 +18,6 @@ public class Dialog {
      */
     private String group;
     /**
-     * 对话对外关联标记
-     */
-    private String businessId;
-    /**
      * 对话参与者，有权发送和接收消息的人
      */
     private List<String> participants;
@@ -56,14 +52,6 @@ public class Dialog {
 
     public void setGroup(String group) {
         this.group = group;
-    }
-
-    public String getBusinessId() {
-        return businessId;
-    }
-
-    public void setBusinessId(String businessId) {
-        this.businessId = businessId;
     }
 
     public List<String> getParticipants() {

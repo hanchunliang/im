@@ -3,7 +3,7 @@ package org.onelab.im.core.domain.manager;
 import java.util.List;
 
 /**
- * 对话全局管理：对话成员管理，对话属性管理
+ * 对话全局管理器：对话成员管理，对话属性管理
  * Created by chunliangh on 14-10-21.
  */
 public class DialogGlobalManager implements DialogManager {
@@ -12,7 +12,8 @@ public class DialogGlobalManager implements DialogManager {
      * @param dID
      * @param participant
      */
-    void addParticipant(String dID,String participant){};
+    void addParticipant(String dID,String participant){
+    };
 
     /**
      * 增加对话参与者

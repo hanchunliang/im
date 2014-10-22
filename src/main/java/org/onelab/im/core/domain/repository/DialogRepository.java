@@ -11,7 +11,6 @@ import java.util.Map;
  */
 public class DialogRepository {
 
-//    private PersistenceInterface persistenceInterface = Dependence
     /**
      * 持久化对话
      * @param dialogId 对话ID

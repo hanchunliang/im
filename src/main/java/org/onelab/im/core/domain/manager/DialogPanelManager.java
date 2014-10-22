@@ -1,6 +1,6 @@
 package org.onelab.im.core.domain.manager;
 
-import org.onelab.im.core.domain.DialogPanel;
+import org.onelab.im.core.DialogPanel;
 
 import java.util.List;
 import java.util.Map;
