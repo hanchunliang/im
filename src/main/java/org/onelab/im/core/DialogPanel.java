@@ -1,5 +1,8 @@
 package org.onelab.im.core;
 
+import org.onelab.im.core.domain.DependenceRoot;
+import org.onelab.im.core.domain.Message;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,34 +19,45 @@ public class DialogPanel {
     }
     /**
      * 获取对话信息
-     * @return null 对话已关闭
+     * @return 对话信息 [如果不存在给定对话对话,返回null]
      */
     public Map<String,String> getDialogInfo(){
-        return DependenceRoot.dialogCache.dialogInfo(group, dialogId);
+        Map<String,String> dialogInfo = DependenceRoot.dialogCache.dialogInfo(group, dialogId);
+        if (dialogInfo==null){
+            DependenceRoot.dialogLog.warn("DialogPanel.getDialogInfo: no dialog{group="+group+",dialogId="+dialogId+"}");
+        }
+        return dialogInfo;
     }
     /**
      * 添加消息
      * @param message
-     * @return 消息序号 -1消息增加失败，序号从0开始
+     * @return 消息序号 从0开始，[如果不存在给定对话,返回-1]
      */
     public int write(Message message){
-        return DependenceRoot.dialogCache.write(group,dialogId,message);
+        int index = DependenceRoot.dialogCache.write(group,dialogId,message);
+        if (index==-1){
+            DependenceRoot.dialogLog.warn("DialogPanel.write: no dialog{group="+group+",dialogId="+dialogId+"}");
+        }
+        return index;
     }
     /**
      * 获取所有消息
-     * @return null 对话已关闭
+     * @return 当前对话的所有消息 [如果不存在给定对话对话,返回null]
      */
     public List<Message> read(){
         List<Message> messages = DependenceRoot.dialogCache.read(group,dialogId);
+        if (messages == null){
+            DependenceRoot.dialogLog.warn("DialogPanel.read: no dialog{group="+group+",dialogId="+dialogId+"}");
+        }
         return messages;
     }
     /**
      * 从指定条目开始获取消息
      * @param startIndex 从第几条获取 条目编号从0开始
-     * @return null 对话已关闭
+     * @return [如果不存在给定对话对话,返回null]
      */
     public List<Message> read(int startIndex){
-        List<Message> messages = DependenceRoot.dialogCache.read(group,dialogId);
+        List<Message> messages = read();
         if (startIndex<0) startIndex = 0;
         return messages.subList(startIndex,messages.size());
     }
@@ -51,10 +65,10 @@ public class DialogPanel {
      * 从指定条目开始顺序获取指定条目数的消息
      * @param startIndex 从第几条获取 条目编号从0开始
      * @param len 指定条目数
-     * @return null 对话已关闭
+     * @return [如果不存在给定对话对话,返回null]
      */
     public List<Message> read(int startIndex,int len){
-        List<Message> messages = DependenceRoot.dialogCache.read(group,dialogId);
+        List<Message> messages = read();
         int endIndex = startIndex+len;
         if (endIndex>messages.size()) endIndex = messages.size();
         return messages.subList(startIndex,endIndex);

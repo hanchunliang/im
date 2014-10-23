@@ -1,6 +1,5 @@
-package org.onelab.im.core;
+package org.onelab.im.core.domain;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -25,14 +24,6 @@ public class Dialog {
      * 对话信息，记录对话的一些特征数据。 非法字符：空格和分号
      */
     private Map<String,String> info;
-    /**
-     * 对话创建时间
-     */
-    private Date ts;
-    /**
-     * 对话销毁时间
-     */
-    private Date te;
     /**
      * 对话内容
      */
@@ -68,21 +59,5 @@ public class Dialog {
 
     public Map<String, String> getInfo() {
         return info;
-    }
-
-    public Date getTs() {
-        return ts;
-    }
-
-    public void setTs(Date ts) {
-        this.ts = ts;
-    }
-
-    public Date getTe() {
-        return te;
-    }
-
-    public void setTe(Date te) {
-        this.te = te;
     }
 }

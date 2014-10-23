@@ -1,4 +1,4 @@
-package org.onelab.im.core;
+package org.onelab.im.core.domain;
 
 import org.onelab.im.dependence.DialogCacheInterface;
 import org.onelab.im.dependence.DialogLogInterface;

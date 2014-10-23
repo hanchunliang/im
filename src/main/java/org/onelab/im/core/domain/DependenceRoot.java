@@ -1,4 +1,4 @@
-package org.onelab.im.core;
+package org.onelab.im.core.domain;
 
 import org.onelab.im.basic.DialogCache;
 import org.onelab.im.basic.DialogPersistence;
@@ -12,9 +12,9 @@ import org.onelab.im.dependence.DialogPersistenceInterface;
  * Created by chunliangh on 14-10-22.
  */
 public class DependenceRoot {
-    static DialogCacheInterface dialogCache;
-    static DialogPersistenceInterface dialogPersistence;
-    static DialogLogInterface dialogLog;
+    public static DialogCacheInterface dialogCache;
+    public static DialogPersistenceInterface dialogPersistence;
+    public static DialogLogInterface dialogLog;
 
     public static void init(Dependence dependence){
         dialogCache = new DialogCache();

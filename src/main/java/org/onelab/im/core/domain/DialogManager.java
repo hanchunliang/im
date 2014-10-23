@@ -1,6 +1,6 @@
-package org.onelab.im.core;
+package org.onelab.im.core.domain;
 
-import org.onelab.im.dependence.DialogCacheInterface;
+import org.onelab.im.core.DialogPanel;
 
 import java.util.*;
 
@@ -11,7 +11,7 @@ import java.util.*;
 public class DialogManager {
     private static DialogManager instance = new DialogManager();
     private DialogManager(){}
-    static DialogManager getInstance(){
+    public static DialogManager getInstance(){
         return instance;
     }
     /**
@@ -20,11 +20,10 @@ public class DialogManager {
      * @param dialogId 对话ID
      * @param dialogInfo 对话信息
      */
-    void createDialog(String groupId, String dialogId, Map<String, String> dialogInfo){
+    public void createDialog(String groupId, String dialogId, Map<String, String> dialogInfo){
         if(dialogInfo == null){
             dialogInfo = new HashMap<String, String>();
         }
-        dialogInfo.put(DialogCacheInterface.INFO_CREATETIME_KEY,new Date().getTime()+"");
         DependenceRoot.dialogCache.cache(groupId,dialogId,dialogInfo);
     };
 
@@ -32,18 +31,17 @@ public class DialogManager {
      * 关闭给定对话组的对话
      * @param group
      */
-    void destroyDialog(String group) {
+    public void destroyDialog(String group) {
         List<Dialog> dialogs = new ArrayList<Dialog>();
         List<String> dialogIds = DependenceRoot.dialogCache.getDialogIds(group);
         if (dialogIds!=null){
             for (String dialogId:dialogIds){
                 Map<String,String> dialogInfo = DependenceRoot.dialogCache.dialogInfo(group,dialogId);
                 Dialog dialog = new Dialog(group,dialogId,dialogInfo);
-                dialog.setTs(new Date(Long.parseLong(dialogInfo.get(DialogCacheInterface.INFO_CREATETIME_KEY))));
-                dialog.setTe(new Date());
-                dialogInfo.remove(DialogCacheInterface.INFO_CREATETIME_KEY);
                 dialogs.add(dialog);
             }
+        }else{
+            DependenceRoot.dialogLog.warn("DialogManager.destroyDialog: no group[" + group + "]");
         }
         if (dialogs.size()>0){
             //删除缓存中记录
@@ -58,12 +56,9 @@ public class DialogManager {
      * @param group
      * @param dialogId
      */
-    void destroyDialog(String group, String dialogId) {
+    public void destroyDialog(String group, String dialogId) {
         Map<String,String> dialogInfo = DependenceRoot.dialogCache.dialogInfo(group,dialogId);
         Dialog dialog = new Dialog(group,dialogId,dialogInfo);
-        dialog.setTs(new Date(Long.parseLong(dialogInfo.get(DialogCacheInterface.INFO_CREATETIME_KEY))));
-        dialog.setTe(new Date());
-        dialogInfo.remove(DialogCacheInterface.INFO_CREATETIME_KEY);
         //删除缓存中记录
         DependenceRoot.dialogCache.remove(group,dialogId);
         //持久化dialog
@@ -76,7 +71,7 @@ public class DialogManager {
      * @param dialogId
      * @return
      */
-    DialogPanel getDialogPanel(String group, String dialogId) {
+    public DialogPanel getDialogPanel(String group, String dialogId) {
         return new DialogPanel(group,dialogId);
     }
 
@@ -85,13 +80,15 @@ public class DialogManager {
      * @param group
      * @return
      */
-    List<DialogPanel> getDialogPanel(String group) {
+    public List<DialogPanel> getDialogPanel(String group) {
         List<DialogPanel> dialogPanels = new ArrayList<DialogPanel>();
         List<String> dialogIds = DependenceRoot.dialogCache.getDialogIds(group);
         if (dialogIds!=null){
             for (String dialogId:dialogIds){
                 dialogPanels.add(new DialogPanel(group,dialogId));
             }
+        }else{
+            DependenceRoot.dialogLog.warn("DialogManager.getDialogPanel: no group["+group+"]");
         }
         return dialogPanels;
     }
@@ -102,7 +99,7 @@ public class DialogManager {
      * @param dialogIds
      * @return
      */
-    List<DialogPanel> getDialogPanel(String group, Collection<String> dialogIds) {
+    public List<DialogPanel> getDialogPanel(String group, Collection<String> dialogIds) {
         List<DialogPanel> dialogPanels = new ArrayList<DialogPanel>();
         List<String> dialogIdList = DependenceRoot.dialogCache.getDialogIds(group);
         if (dialogIds!=null){
@@ -111,16 +108,21 @@ public class DialogManager {
                     dialogPanels.add(new DialogPanel(group,dialogId));
                 }
             }
+        }else{
+            DependenceRoot.dialogLog.warn("DialogManager.getDialogPanel: no group["+group+"]");
         }
         return dialogPanels;
     }
 
-    List<DialogPanel> getDialogPanel(String group, Map<String, String> dialogInfo) {
+    public List<DialogPanel> getDialogPanel(String group, Map<String, String> dialogInfo) {
         List<String> dialogIds = DependenceRoot.dialogCache.getDialogIds(group,dialogInfo);
+        if (dialogIds == null){
+            DependenceRoot.dialogLog.warn("DialogManager.getDialogPanel: no group["+group+"]");
+        }
         return getDialogPanel(group,dialogIds);
     }
 
-    List<String> getGroups() {
+    public List<String> getGroups() {
         return DependenceRoot.dialogCache.getGroups();
     }
 }

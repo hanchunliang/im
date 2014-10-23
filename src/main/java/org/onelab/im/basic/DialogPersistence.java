@@ -1,7 +1,7 @@
 package org.onelab.im.basic;
 
 import org.onelab.im.dependence.DialogPersistenceInterface;
-import org.onelab.im.core.Dialog;
+import org.onelab.im.core.domain.Dialog;
 
 import java.util.List;
 

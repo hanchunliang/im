@@ -1,7 +1,7 @@
 package org.onelab.im.basic;
 
 import org.onelab.im.dependence.DialogCacheInterface;
-import org.onelab.im.core.Message;
+import org.onelab.im.core.domain.Message;
 
 import java.util.List;
 import java.util.Map;

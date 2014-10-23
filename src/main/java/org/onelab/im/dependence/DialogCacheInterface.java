@@ -1,32 +1,80 @@
 package org.onelab.im.dependence;
 
-import org.onelab.im.core.Message;
+import org.onelab.im.core.domain.Message;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * 对话信息缓存接口，需外部实现。
- * 需要提供默认无参构造子
+ * 对话缓存接口，需外部注入。
  * Created by chunliangh on 14-10-20.
  */
 public interface DialogCacheInterface {
-    /**
-     * 创建对话时默认在对话信息中保存对话开始时间，起Key为INFO_CREATETIME_KEY
-     */
-    public static final String INFO_CREATETIME_KEY = "info_createtime";
 
+    /**
+     * 缓存给定对话的信息
+     * @param group 对话组
+     * @param dialogId 对话ID
+     * @param dialogInfo 对话信息
+     */
     void cache(String group,String dialogId,Map<String,String> dialogInfo);
 
+    /**
+     * 获取指给对话的信息
+     * @param group 对话组
+     * @param dialogId 对话ID
+     * @return 对话信息 [如果不存在给定对话对话,返回null]
+     */
     Map<String,String> dialogInfo(String group, String dialogId);
 
+    /**
+     * 读取给定对话的消息
+     * @param group 对话组
+     * @param dialogId 对话ID
+     * @return 给定对话的所有消息 [如果不存在给定对话对话,返回null]
+     */
     List<Message> read(String group,String dialogId);
+
+    /**
+     * 向给定对话添加消息
+     * @param group 对话组
+     * @param dialogId 对话ID
+     * @param message 消息
+     * @return 消息序号 从0开始，[如果不存在给定对话,返回-1]
+     */
     int write(String group,String dialogId,Message message);
 
+    /**
+     * 获取所有对话组
+     * @return 对话组
+     */
     List<String> getGroups();
+
+    /**
+     * 获取给定对话组下的对话ID
+     * @param group 对话组
+     * @return 对话ID [如果不存在给定给定对话组,返回null]
+     */
     List<String> getDialogIds(String group);
+
+    /**
+     * 获取给定对话组下包含给定对话信息的对话ID
+     * @param group
+     * @param dialogInfo
+     * @return 对话ID [如果不存在给定给定对话组,返回null]
+     */
     List<String> getDialogIds(String group,Map<String,String> dialogInfo);
 
+    /**
+     * 删除缓存中的给定对话信息
+     * @param group 对话组
+     * @param dialogId 对话ID
+     */
     void remove(String group,String dialogId);
+
+    /**
+     * 删除给定对话组的对话信息
+     * @param group 对话组
+     */
     void remove(String group);
 }
