@@ -1,33 +1,33 @@
 package org.onelab.im.core;
 
-import org.onelab.im.basic.Cache;
-import org.onelab.im.basic.DatabaseAccess;
-import org.onelab.im.basic.Log;
-import org.onelab.im.core.dependence.CacheInterface;
-import org.onelab.im.core.dependence.LogInterface;
-import org.onelab.im.core.dependence.PersistenceInterface;
+import org.onelab.im.basic.DialogCache;
+import org.onelab.im.basic.DialogPersistence;
+import org.onelab.im.basic.DialogLog;
+import org.onelab.im.dependence.DialogCacheInterface;
+import org.onelab.im.dependence.DialogLogInterface;
+import org.onelab.im.dependence.DialogPersistenceInterface;
 
 /**
  * 外部依赖注册表
  * Created by chunliangh on 14-10-22.
  */
 public class DependenceRoot {
-    public static CacheInterface cache;
-    public static PersistenceInterface persistence;
-    public static LogInterface log;
+    static DialogCacheInterface dialogCache;
+    static DialogPersistenceInterface dialogPersistence;
+    static DialogLogInterface dialogLog;
 
-    static void init(Dependence dependence){
-        cache = new Cache();
-        persistence = new DatabaseAccess();
-        log = new Log();
-        if (dependence.getCacheInterface()!=null){
-            cache = dependence.getCacheInterface();
+    public static void init(Dependence dependence){
+        dialogCache = new DialogCache();
+        dialogPersistence = new DialogPersistence();
+        dialogLog = new DialogLog();
+        if (dependence.getDialogCacheInterface()!=null){
+            dialogCache = dependence.getDialogCacheInterface();
         }
         if (dependence.getPersistenceInterface()!=null){
-            persistence = dependence.getPersistenceInterface();
+            dialogPersistence = dependence.getPersistenceInterface();
         }
         if (dependence.getLogInterface()!=null){
-            log = dependence.getLogInterface();
+            dialogLog = dependence.getLogInterface();
         }
     }
 }

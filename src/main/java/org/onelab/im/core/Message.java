@@ -1,4 +1,4 @@
-package org.onelab.im.core.domain.model;
+package org.onelab.im.core;
 
 import java.util.Date;
 

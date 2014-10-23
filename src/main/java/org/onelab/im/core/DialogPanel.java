@@ -1,9 +1,5 @@
 package org.onelab.im.core;
 
-import org.onelab.im.core.domain.model.Dialog;
-import org.onelab.im.core.domain.model.Message;
-
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -14,85 +10,53 @@ import java.util.Map;
 public class DialogPanel {
     private String group;
     private String dialogId;
-    public DialogPanel(String group,String dialogId){}
-    /**
-     * 增加对话成员
-     * @param participant
-     */
-    public void addParticipant(String participant){
-
+    public DialogPanel(String group,String dialogId){
+        this.group = group;
+        this.dialogId = dialogId;
     }
     /**
-     * 增加对话成员
-     * @param participants
+     * 获取对话信息
+     * @return null 对话已关闭
      */
-    public void addParticipants(Collection<String> participants){}
-    /**
-     * 删除对话成员
-     * @param participant
-     */
-    public void removeParticipant(String participant){
-
+    public Map<String,String> getDialogInfo(){
+        return DependenceRoot.dialogCache.dialogInfo(group, dialogId);
     }
-    /**
-     * 删除对话成员
-     * @param participants
-     */
-    public void removeParticipant(Collection<String> participants){
-
-    }
-    /**
-     * 为成员变量负值，如果没有所需成员变量则创建并负值
-     * @param name
-     * @param value
-     */
-    public void setAttribute(String name,String value){}
-    /**
-     * 为成员变量负值，如果没有所需成员变量则创建并负值
-     * @param attributes
-     */
-    public void setAttributes(Map<String,String> attributes){}
-    /**
-     * 删除成员变量
-     * @param name
-     */
-    public void removeAttribute(String name){}
-    /**
-     * 删除成员变量
-     * @param names
-     */
-    public void removeAttributes(Collection<String> names){}
-    /**
-     * 获取对话
-     * @return
-     */
-    Dialog getDialog(){return null;};
     /**
      * 添加消息
      * @param message
-     * @return 消息序号 0消息增加失败，序号从1开始
+     * @return 消息序号 -1消息增加失败，序号从0开始
      */
-    int write(Message message){
-        return 0;
-    };
+    public int write(Message message){
+        return DependenceRoot.dialogCache.write(group,dialogId,message);
+    }
     /**
      * 获取所有消息
-     * @return
+     * @return null 对话已关闭
      */
-    List<Message> read(){return null;};
+    public List<Message> read(){
+        List<Message> messages = DependenceRoot.dialogCache.read(group,dialogId);
+        return messages;
+    }
     /**
      * 从指定条目开始获取消息
-     * @param startIndex 从第几条获取 条目编号从1开始
-     * @return
+     * @param startIndex 从第几条获取 条目编号从0开始
+     * @return null 对话已关闭
      */
-    List<Message> read(int startIndex){return null;};
+    public List<Message> read(int startIndex){
+        List<Message> messages = DependenceRoot.dialogCache.read(group,dialogId);
+        if (startIndex<0) startIndex = 0;
+        return messages.subList(startIndex,messages.size());
+    }
     /**
      * 从指定条目开始顺序获取指定条目数的消息
-     * @param startIndex 从第几条获取 条目编号从1开始
+     * @param startIndex 从第几条获取 条目编号从0开始
      * @param len 指定条目数
-     * @return
+     * @return null 对话已关闭
      */
-    List<Message> read(int startIndex,int len){
-        return null;
+    public List<Message> read(int startIndex,int len){
+        List<Message> messages = DependenceRoot.dialogCache.read(group,dialogId);
+        int endIndex = startIndex+len;
+        if (endIndex>messages.size()) endIndex = messages.size();
+        return messages.subList(startIndex,endIndex);
     }
 }

@@ -17,5 +17,7 @@ public class ImEngine {
     /**
      * 停止IM引擎
      */
-    public static void stop(){}
+    public static void stop(){
+        Im.destroyDialog();
+    }
 }

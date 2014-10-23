@@ -1,47 +1,47 @@
 package org.onelab.im.core;
 
-import org.onelab.im.core.dependence.CacheInterface;
-import org.onelab.im.core.dependence.LogInterface;
-import org.onelab.im.core.dependence.PersistenceInterface;
+import org.onelab.im.dependence.DialogCacheInterface;
+import org.onelab.im.dependence.DialogLogInterface;
+import org.onelab.im.dependence.DialogPersistenceInterface;
 
 /**
  * Created by chunliangh on 14-10-21.
  */
 public class Dependence {
 
-    private CacheInterface cacheInterface;
-    private PersistenceInterface persistenceInterface;
-    private LogInterface logInterface;
+    private DialogCacheInterface dialogCacheInterface;
+    private DialogPersistenceInterface persistenceInterface;
+    private DialogLogInterface logInterface;
 
     public Dependence(){}
 
-    public Dependence(CacheInterface cacheInterface,PersistenceInterface persistenceInterface,LogInterface logInterface){
-        this.cacheInterface = cacheInterface;
+    public Dependence(DialogCacheInterface dialogCacheInterface,DialogPersistenceInterface persistenceInterface,DialogLogInterface logInterface){
+        this.dialogCacheInterface = dialogCacheInterface;
         this.persistenceInterface = persistenceInterface;
         this.logInterface = logInterface;
     }
 
-    public CacheInterface getCacheInterface() {
-        return cacheInterface;
+    public DialogCacheInterface getDialogCacheInterface() {
+        return dialogCacheInterface;
     }
 
-    public void setCacheInterface(CacheInterface cacheInterface) {
-        this.cacheInterface = cacheInterface;
+    public void setDialogCacheInterface(DialogCacheInterface dialogCacheInterface) {
+        this.dialogCacheInterface = dialogCacheInterface;
     }
 
-    public PersistenceInterface getPersistenceInterface() {
+    public DialogPersistenceInterface getPersistenceInterface() {
         return persistenceInterface;
     }
 
-    public void setPersistenceInterface(PersistenceInterface persistenceInterface) {
+    public void setPersistenceInterface(DialogPersistenceInterface persistenceInterface) {
         this.persistenceInterface = persistenceInterface;
     }
 
-    public LogInterface getLogInterface() {
+    public DialogLogInterface getLogInterface() {
         return logInterface;
     }
 
-    public void setLogInterface(LogInterface logInterface) {
+    public void setLogInterface(DialogLogInterface logInterface) {
         this.logInterface = logInterface;
     }
 }

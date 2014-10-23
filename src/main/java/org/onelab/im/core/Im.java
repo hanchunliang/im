@@ -9,94 +9,74 @@ import java.util.Map;
  * Created by chunliangh on 14-10-21.
  */
 public class Im {
-    /**
-     * 创建对话
-     * @param group not null 对话组
-     * @param id not null 业务ID
-     */
-    public static void createDialog(String group,String id){}
+    private static DialogManager dialogManager = DialogManager.getInstance();
     /**
      * 创建对话
      * @param group not null 对话组
      * @param id not null 对话ID
-     * @param participants 成员
-     * @param attributes 变量
      */
-    public static void createDialog(String group,String id,Collection<String> participants,Map<String,String> attributes){}
+    public static void createDialog(String group,String id,Map<String,String> dialogInfo){
+        dialogManager.createDialog(group,id,dialogInfo);
+    }
+    /**
+     * 关闭所有对话
+     */
+    public static void destroyDialog(){
+        List<String> groups = dialogManager.getGroups();
+        for (String group:groups){
+            dialogManager.destroyDialog(group);
+        }
+    }
     /**
      * 关闭给定对话组的对话
-     * @param group
+     * @param group 对话组
      */
-    public static void closeDialog(String group){
-
+    public static void destroyDialog(String group){
+        dialogManager.destroyDialog(group);
     }
     /**
      * 关闭给定对话
      * @param group 对话组
-     * @param id 对话ID
+     * @param dialogId 对话ID
      */
-    public static void closeDialog(String group,String id){
-
+    public static void destroyDialog(String group,String dialogId){
+        dialogManager.destroyDialog(group,dialogId);
     }
     /**
      * 获取对话板
      * @param group 对话组
-     * @param id 对话ID
+     * @param dialogId 对话ID
      * @return
      */
-    public static DialogPanel getDialogPanel(String group,String id){
-        return null;
+    public static DialogPanel getDialogPanel(String group,String dialogId){
+        return dialogManager.getDialogPanel(group,dialogId);
     }
     /**
      * 获取对话板
      * @param group
      * @return
      */
-    public static List<DialogPanel> getDialogPanels(String group){return null;}
-    /**
-     * 获取对话板
-     * @param participant
-     * @return
-     */
-    public static List<DialogPanel> getDialogPanels(String group,String participant){
-        return null;
-    }
-    /**
-     * 获取对话板
-     * @param participants
-     * @return
-     */
-    public static List<DialogPanel> getDialogPanels(String group,Collection<String> participants){
-        return null;
-    }
-    /**
-     * 获取对话板
-     * @param group
-     * @param attributes
-     * @return
-     */
-    public static List<DialogPanel> getDialogPanels(String group,Map<String,String> attributes){
-        return null;
-    }
-    /**
-     * 获取对话板
-     * @param group
-     * @param participant
-     * @param attributes
-     * @return
-     */
-    public static List<DialogPanel> getDialogPanels(String group,String participant,Map<String,String> attributes){
-        return null;
-    }
-    /**
-     * 获取对话板
-     * @param group
-     * @param participants
-     * @param attributes
-     * @return
-     */
-    public static List<DialogPanel> getDialogPanels(String group,Collection<String> participants,Map<String,String> attributes){
-        return null;
+    public static List<DialogPanel> getDialogPanels(String group){
+        return dialogManager.getDialogPanel(group);
     }
 
+    /**
+     * 获取对话板
+     * @param group
+     * @param dialogIds
+     * @return
+     */
+    public static List<DialogPanel> getDialogPanels(String group,Collection<String> dialogIds){
+        return dialogManager.getDialogPanel(group,dialogIds);
+    }
+
+    /**
+     * 获取对话板
+     * @param group
+     * @param dialogInfo
+     * @return
+     */
+    public static List<DialogPanel> getDialogPanels(String group,Map<String,String> dialogInfo){
+        return dialogManager.getDialogPanel(group,dialogInfo);
+    }
 }
