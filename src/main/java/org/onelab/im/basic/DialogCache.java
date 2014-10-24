@@ -27,7 +27,22 @@ public class DialogCache implements DialogCacheInterface {
     }
 
     @Override
+    public List<String> groups() {
+        return null;
+    }
+
+    @Override
+    public List<String> dialogIds(String group) {
+        return null;
+    }
+
+    @Override
     public Map<String, String> dialogInfo(String group, String id) {
+        return null;
+    }
+
+    @Override
+    public Map<String, Map<String, String>> dialogInfoMap(String group) {
         return null;
     }
 
@@ -39,20 +54,5 @@ public class DialogCache implements DialogCacheInterface {
     @Override
     public int write(String group, String dialogId, Message message) {
         return 0;
-    }
-
-    @Override
-    public List<String> getGroups() {
-        return null;
-    }
-
-    @Override
-    public List<String> getDialogIds(String group) {
-        return null;
-    }
-
-    @Override
-    public List<String> getDialogIds(String group, Map<String, String> dialogInfo) {
-        return null;
     }
 }

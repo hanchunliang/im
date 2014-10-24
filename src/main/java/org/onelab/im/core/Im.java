@@ -99,4 +99,16 @@ public class Im {
         assert dialogInfo != null;
         return dialogManager.getDialogPanel(group,dialogInfo);
     }
+
+    /**
+     * 获取对话板
+     * @param group not null
+     * @param condition not null
+     * @return
+     */
+    public static List<DialogPanel> getDialogPanels(String group,Condition condition){
+        assert group!=null;
+        assert condition != null;
+        return dialogManager.getDialogPanel(group, condition);
+    }
 }

@@ -7,5 +7,5 @@ package org.onelab.im.dependence;
 public interface DialogLogInterface {
     void info(String msg);
     void warn(String msg);
-    void error(String msg, Throwable t);
+    void error(String msg);
 }

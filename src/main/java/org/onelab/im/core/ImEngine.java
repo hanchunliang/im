@@ -17,7 +17,7 @@ public class ImEngine {
         try {
             DependenceRoot.init(dependence);
         } catch (Throwable t){
-            DependenceRoot.dialogLog.error("fail to start ImEngine",t);
+            DependenceRoot.dialogLog.error("fail to start ImEngine");
             throw new RuntimeException("fail to start ImEngine",t);
         }
         DependenceRoot.dialogLog.info("start ImEngine success....");
@@ -30,7 +30,7 @@ public class ImEngine {
         try {
             Im.destroyDialog();
         } catch (Throwable t){
-            DependenceRoot.dialogLog.error("fail to stop ImEngine",t);
+            DependenceRoot.dialogLog.error("fail to stop ImEngine");
             throw new RuntimeException("fail to stop ImEngine",t);
         }
         DependenceRoot.dialogLog.info("stop ImEngine success....");

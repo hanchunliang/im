@@ -20,12 +20,45 @@ public interface DialogCacheInterface {
     void cache(String group,String dialogId,Map<String,String> dialogInfo);
 
     /**
-     * 获取指给对话的信息
+     * 删除缓存中的给定对话信息
+     * @param group 对话组
+     * @param dialogId 对话ID
+     */
+    void remove(String group,String dialogId);
+
+    /**
+     * 删除给定对话组的对话信息
+     * @param group 对话组
+     */
+    void remove(String group);
+
+    /**
+     * 获取所有对话组
+     * @return 对话组 not null
+     */
+    List<String> groups();
+
+    /**
+     * 获取给定对话组下的对话ID
+     * @param group 对话组
+     * @return 对话ID [如果不存在给定给定对话组,返回null]
+     */
+    List<String> dialogIds(String group);
+
+    /**
+     * 获取给定对话的信息
      * @param group 对话组
      * @param dialogId 对话ID
      * @return 对话信息 [如果不存在给定对话对话,返回null]
      */
     Map<String,String> dialogInfo(String group, String dialogId);
+
+    /**
+     * 获取给定对话组的对话信息
+     * @param group 对话组
+     * @return <dialogId,dialogInfo> [如果不存在给定对话组,返回null]
+     */
+    Map<String,Map<String,String>> dialogInfoMap(String group);
 
     /**
      * 读取给定对话的消息
@@ -43,38 +76,4 @@ public interface DialogCacheInterface {
      * @return 消息序号 从0开始，[如果不存在给定对话,返回-1]
      */
     int write(String group,String dialogId,Message message);
-
-    /**
-     * 获取所有对话组
-     * @return 对话组
-     */
-    List<String> getGroups();
-
-    /**
-     * 获取给定对话组下的对话ID
-     * @param group 对话组
-     * @return 对话ID [如果不存在给定给定对话组,返回null]
-     */
-    List<String> getDialogIds(String group);
-
-    /**
-     * 获取给定对话组下包含给定对话信息的对话ID
-     * @param group
-     * @param dialogInfo
-     * @return 对话ID [如果不存在给定给定对话组,返回null]
-     */
-    List<String> getDialogIds(String group,Map<String,String> dialogInfo);
-
-    /**
-     * 删除缓存中的给定对话信息
-     * @param group 对话组
-     * @param dialogId 对话ID
-     */
-    void remove(String group,String dialogId);
-
-    /**
-     * 删除给定对话组的对话信息
-     * @param group 对话组
-     */
-    void remove(String group);
 }

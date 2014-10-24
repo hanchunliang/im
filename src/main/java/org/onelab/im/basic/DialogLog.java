@@ -3,23 +3,27 @@ package org.onelab.im.basic;
 
 import org.onelab.im.dependence.DialogLogInterface;
 
+import java.util.logging.Logger;
+
 /**
  * Created by chunliangh on 14-10-21.
  */
 public class DialogLog implements DialogLogInterface {
 
+    Logger logger = Logger.getLogger("<<im log>>");
+
     @Override
     public void info(String msg) {
-        System.out.println("info:"+msg);
+        logger.info(msg);
     }
 
     @Override
     public void warn(String msg) {
-        System.out.println("warn:"+msg);
+        logger.warning(msg);
     }
 
     @Override
-    public void error(String msg, Throwable t) {
-        System.out.println("error:"+msg);
+    public void error(String msg) {
+        logger.severe(msg);
     }
 }
