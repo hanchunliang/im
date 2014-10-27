@@ -110,7 +110,7 @@ public class ImEngine {
     /**
      * 停止IM引擎
      */
-    public static void stop() throws Exception{
+    public static void stop() {
         ImEngine.destroyDialog();
     }
 }
