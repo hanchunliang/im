@@ -28,11 +28,9 @@ public class DialogPanel {
     /**
      * 添加消息
      * @param message
-     * @return 消息数 从1开始，[如果不存在给定对话,返回0]
      */
-    public int write(Message message){
-        int size = DependenceRoot.dialogCache.write(group,dialogId,message);
-        return size;
+    public void write(Message message){
+        DependenceRoot.dialogCache.write(group,dialogId,message);
     }
     /**
      * 获取所有消息

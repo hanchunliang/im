@@ -98,19 +98,18 @@ public class DialogCache implements DialogCacheInterface {
     }
 
     @Override
-    public int write(String group, String dialogId, Message message) {
+    public void write(String group, String dialogId, Message message) {
         Map<String,Map> groupMap = cache.get(group);
         if (groupMap!=null) {
             Map dialogMap = groupMap.get(dialogId);
             if (dialogMap!=null){
                 List<Message> messageQueue = (List<Message>) dialogMap.get(key_msg);
                 synchronized (messageQueue){
+                    int size = messageQueue.size();
+                    message.setIndex(size);
                     messageQueue.add(message);
-                    return messageQueue.size();
                 }
             }
         }
-        return 0;
     }
-
 }

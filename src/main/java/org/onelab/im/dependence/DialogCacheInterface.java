@@ -73,7 +73,6 @@ public interface DialogCacheInterface {
      * @param group 对话组
      * @param dialogId 对话ID
      * @param message 消息
-     * @return 消息数 从1开始，[如果不存在给定对话,返回0]
      */
-    int write(String group,String dialogId,Message message);
+    void write(String group,String dialogId,Message message);
 }
