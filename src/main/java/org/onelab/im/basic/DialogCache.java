@@ -23,7 +23,9 @@ public class DialogCache implements DialogCacheInterface {
             cache.put(group, groupMap);
         }
         Map dialogMap = new ConcurrentHashMap<String,Object>();
-        dialogMap.put(key_info,dialogInfo);
+        if (dialogInfo!=null){
+            dialogMap.put(key_info,dialogInfo);
+        }
         dialogMap.put(key_msg,new LinkedList<Message>());
         groupMap.put(dialogId,dialogMap);
     }
