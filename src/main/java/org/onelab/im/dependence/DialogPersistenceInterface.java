@@ -9,6 +9,15 @@ import java.util.List;
  * Created by chunliangh on 14-10-20.
  */
 public interface DialogPersistenceInterface {
-    int persist(Dialog dialog);
-    int persist(List<Dialog> dialogs);
+    /**
+     * 持久化dialog
+     * @param dialog
+     */
+    void persist(Dialog dialog);
+
+    /**
+     * 持久化dialog
+     * @param dialogs
+     */
+    void persist(List<Dialog> dialogs);
 }

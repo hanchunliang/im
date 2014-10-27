@@ -23,22 +23,16 @@ public class DialogPanel {
      */
     public Map<String,String> getDialogInfo(){
         Map<String,String> dialogInfo = DependenceRoot.dialogCache.dialogInfo(group, dialogId);
-        if (dialogInfo==null){
-            DependenceRoot.dialogLog.warn("DialogPanel.getDialogInfo: no dialog{group="+group+",dialogId="+dialogId+"}");
-        }
         return dialogInfo;
     }
     /**
      * 添加消息
      * @param message
-     * @return 消息序号 从0开始，[如果不存在给定对话,返回-1]
+     * @return 消息数 从1开始，[如果不存在给定对话,返回0]
      */
     public int write(Message message){
-        int index = DependenceRoot.dialogCache.write(group,dialogId,message);
-        if (index==-1){
-            DependenceRoot.dialogLog.warn("DialogPanel.write: no dialog{group="+group+",dialogId="+dialogId+"}");
-        }
-        return index;
+        int size = DependenceRoot.dialogCache.write(group,dialogId,message);
+        return size;
     }
     /**
      * 获取所有消息
@@ -46,9 +40,6 @@ public class DialogPanel {
      */
     public List<Message> read(){
         List<Message> messages = DependenceRoot.dialogCache.read(group,dialogId);
-        if (messages == null){
-            DependenceRoot.dialogLog.warn("DialogPanel.read: no dialog{group="+group+",dialogId="+dialogId+"}");
-        }
         return messages;
     }
     /**

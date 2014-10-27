@@ -34,7 +34,7 @@ public interface DialogCacheInterface {
 
     /**
      * 获取所有对话组
-     * @return 对话组 not null
+     * @return 对话组
      */
     List<String> groups();
 
@@ -73,7 +73,7 @@ public interface DialogCacheInterface {
      * @param group 对话组
      * @param dialogId 对话ID
      * @param message 消息
-     * @return 消息序号 从0开始，[如果不存在给定对话,返回-1]
+     * @return 消息数 从1开始，[如果不存在给定对话,返回0]
      */
     int write(String group,String dialogId,Message message);
 }

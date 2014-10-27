@@ -1,7 +1,7 @@
 package org.onelab.im.core;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 筛选条件
@@ -9,30 +9,36 @@ import java.util.List;
  */
 public class Condition {
 
-    String name;
-    String value;
+    Map<String,String> must = new HashMap<String, String>();
+    Map<String,String> or = new HashMap<String,String>();
+    Map<String,String> mustNot = new HashMap<String,String>();
 
-    List<Condition> and = new ArrayList<Condition>();
-    List<Condition> or = new ArrayList<Condition>();
-    List<Condition> not = new ArrayList<Condition>();
+    public Condition(){}
 
-    public Condition(String name,String value){
-        this.name = name;
-        this.value = value;
-    }
-
-    public Condition and(Condition condition){
-        and.add(condition);
+    public Condition must(String name,String value){
+        must.put(name, value);
         return this;
     }
 
-    public Condition or(Condition condition){
-        or.add(condition);
+    public Condition or(String name,String value){
+        or.put(name, value);
         return this;
     }
 
-    public Condition not(Condition condition){
-        not.add(condition);
+    public Condition not(String name,String value){
+        mustNot.put(name, value);
         return this;
+    }
+
+    public Map<String,String> getMust() {
+        return must;
+    }
+
+    public Map<String,String> getOr() {
+        return or;
+    }
+
+    public Map<String,String> getMustNot() {
+        return mustNot;
     }
 }

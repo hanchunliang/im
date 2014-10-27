@@ -2,9 +2,7 @@ package org.onelab.im.core.domain;
 
 import org.onelab.im.basic.DialogCache;
 import org.onelab.im.basic.DialogPersistence;
-import org.onelab.im.basic.DialogLog;
 import org.onelab.im.dependence.DialogCacheInterface;
-import org.onelab.im.dependence.DialogLogInterface;
 import org.onelab.im.dependence.DialogPersistenceInterface;
 
 /**
@@ -14,20 +12,17 @@ import org.onelab.im.dependence.DialogPersistenceInterface;
 public class DependenceRoot {
     public static DialogCacheInterface dialogCache;
     public static DialogPersistenceInterface dialogPersistence;
-    public static DialogLogInterface dialogLog;
 
-    public static void init(Dependence dependence){
-        dialogCache = new DialogCache();
-        dialogPersistence = new DialogPersistence();
-        dialogLog = new DialogLog();
-        if (dependence.getDialogCacheInterface()!=null){
-            dialogCache = dependence.getDialogCacheInterface();
+    public static void init(DialogCacheInterface dialogCache, DialogPersistenceInterface dialogPersistence) {
+        if (dialogCache!=null){
+            DependenceRoot.dialogCache = dialogCache;
+        } else {
+            DependenceRoot.dialogCache = new DialogCache();
         }
-        if (dependence.getPersistenceInterface()!=null){
-            dialogPersistence = dependence.getPersistenceInterface();
-        }
-        if (dependence.getLogInterface()!=null){
-            dialogLog = dependence.getLogInterface();
+        if (dialogPersistence!=null){
+            DependenceRoot.dialogPersistence = dialogPersistence;
+        } else {
+            DependenceRoot.dialogPersistence = new DialogPersistence();
         }
     }
 }

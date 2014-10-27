@@ -41,8 +41,6 @@ public class DialogManager {
                 Dialog dialog = new Dialog(group,dialogId,dialogInfo);
                 dialogs.add(dialog);
             }
-        }else{
-            DependenceRoot.dialogLog.warn("DialogManager.destroyDialog: no group[" + group + "]");
         }
         if (dialogs.size()>0){
             //删除缓存中记录
@@ -88,8 +86,6 @@ public class DialogManager {
             for (String dialogId:dialogIds){
                 dialogPanels.add(new DialogPanel(group,dialogId));
             }
-        }else{
-            DependenceRoot.dialogLog.warn("DialogManager.getDialogPanel: no group["+group+"]");
         }
         return dialogPanels;
     }
@@ -109,49 +105,79 @@ public class DialogManager {
                     dialogPanels.add(new DialogPanel(group,dialogId));
                 }
             }
-        }else{
-            DependenceRoot.dialogLog.warn("DialogManager.getDialogPanel: no group["+group+"]");
         }
         return dialogPanels;
     }
 
-    public List<DialogPanel> getDialogPanel(String group, Map<String, String> dialogInfo) {
-        List<String> dialogIds = new ArrayList<String>();
-        Map<String,Map<String,String>> dialogInfoMap = DependenceRoot.dialogCache.dialogInfoMap(group);
-        if (dialogInfoMap != null){
-            for (Map.Entry<String,Map<String,String>> entry:dialogInfoMap.entrySet()){
-                Map<String,String> value = entry.getValue();
-                if (containsMap(value, dialogInfo)){
-                    dialogIds.add(entry.getKey());
-                }
-            }
-        }else{
-            DependenceRoot.dialogLog.warn("DialogManager.getDialogPanel: no group["+group+"]");
-            return null;
-        }
-        return getDialogPanel(group,dialogIds);
-    }
-
     public List<DialogPanel> getDialogPanel(String group, Condition condition) {
-        return null;
+        Map<String,Map<String,String>> dialogInfoMap = DependenceRoot.dialogCache.dialogInfoMap(group);
+        List<String> dialogIds = getDialogIds(condition,dialogInfoMap);
+        return getDialogPanel(group,dialogIds);
     }
 
     public List<String> getGroups() {
         return DependenceRoot.dialogCache.groups();
     }
 
-    //if map_1 contains map_2 return true
-    private boolean containsMap(Map<String, String> map_1, Map<String, String> map_2) {
-        Set<String> keySet_1 = map_1.keySet();
-        Set<String> keySet_2 = map_2.keySet();
-        if(keySet_1.containsAll(keySet_2)){
-            for (String key:keySet_2){
-                if (!map_2.get(key).equals(map_1.get(key))){
-                    return false;
+    private List<String> getDialogIds(Condition condition,Map<String,Map<String,String>> dialogInfoMap) {
+        List<String> dialogIds = new ArrayList<String>();
+        if (dialogInfoMap != null){
+            for (Map.Entry<String,Map<String,String>> entry:dialogInfoMap.entrySet()){
+                Map<String,String> value = entry.getValue();
+                if (checkCondition(condition, value)){
+                    dialogIds.add(entry.getKey());
                 }
             }
-            return true;
+        }
+        return dialogIds;
+    }
+
+    private boolean checkCondition(Condition condition, Map<String, String> dialogInfo) {
+        Map<String, String> or = condition.getOr();
+        Map<String, String> must = condition.getMust();
+        Map<String, String> mustNot = condition.getMustNot();
+        boolean res = true;
+        if (!or.isEmpty()){
+            res = or(dialogInfo,or);
+        }
+        if (res && !must.isEmpty()){
+            res = must(dialogInfo,must);
+        }
+        if (res && !mustNot.isEmpty()){
+            res = mustNot(dialogInfo,mustNot);
+        }
+        return res;
+    }
+
+    private boolean or(Map<String, String> map_1, Map<String, String> map_2){
+        Set<String> keySet_2 = map_2.keySet();
+        for (String key:keySet_2){
+            if (map_2.get(key).equals(map_1.get(key))){
+                return true;
+            }
         }
         return false;
+    }
+
+    //if map_1 contains map_2 return true
+    private boolean must(Map<String, String> map_1, Map<String, String> map_2) {
+        Set<String> keySet_2 = map_2.keySet();
+        for (String key:keySet_2){
+            if (!map_2.get(key).equals(map_1.get(key))){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //if all map_2'variable not in map_1 return true
+    private boolean mustNot(Map<String, String> map_1, Map<String, String> map_2) {
+        Set<String> keySet_2 = map_2.keySet();
+        for (String key:keySet_2){
+            if (map_2.get(key).equals(map_1.get(key))){
+                return false;
+            }
+        }
+        return true;
     }
 }
