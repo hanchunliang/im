@@ -5,7 +5,6 @@ import org.onelab.im.core.domain.Message;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by chunliangh on 14-10-21.
@@ -21,14 +20,12 @@ public class DialogCache implements DialogCacheInterface {
         Map<String,Map> groupMap = cache.get(group);
         if (groupMap==null) {
             groupMap = new ConcurrentHashMap<String, Map>();
-            cache.put(group,groupMap);
+            cache.put(group, groupMap);
         }
-        Map dialogMap = groupMap.get(dialogId);
-        if (dialogMap==null){
-            dialogMap = new ConcurrentHashMap<String,Object>();
-            groupMap.put(dialogId,dialogMap);
-        }
+        Map dialogMap = new ConcurrentHashMap<String,Object>();
         dialogMap.put(key_info,dialogInfo);
+        dialogMap.put(key_msg,new LinkedList<Message>());
+        groupMap.put(dialogId,dialogMap);
     }
 
     @Override
@@ -92,8 +89,7 @@ public class DialogCache implements DialogCacheInterface {
         if (groupMap!=null) {
             Map dialogMap = groupMap.get(dialogId);
             if (dialogMap!=null){
-                Queue<Message> messages = (Queue<Message>) dialogMap.get(key_msg);
-                return new ArrayList<Message>(messages);
+                return (List<Message>) dialogMap.get(key_msg);
             }
         }
         return null;
@@ -105,14 +101,14 @@ public class DialogCache implements DialogCacheInterface {
         if (groupMap!=null) {
             Map dialogMap = groupMap.get(dialogId);
             if (dialogMap!=null){
-                Queue<Message> messages = (Queue<Message>) dialogMap.get(key_msg);
-                if (messages==null){
-                    messages = new ConcurrentLinkedQueue<Message>();
+                List<Message> messageQueue = (List<Message>) dialogMap.get(key_msg);
+                synchronized (messageQueue){
+                    messageQueue.add(message);
+                    return messageQueue.size();
                 }
-                messages.add(message);
-                return messages.size();
             }
         }
         return 0;
     }
+
 }

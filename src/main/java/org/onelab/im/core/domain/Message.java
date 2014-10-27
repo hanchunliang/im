@@ -14,7 +14,7 @@ public class Message {
     /**
      * 类型
      */
-    private String type;
+    private int type;
     /**
      * 内容
      */
@@ -24,7 +24,7 @@ public class Message {
      */
     private String author;
     /**
-     * 发送时间
+     * 书写时间
      */
     private Date time;
 
@@ -36,11 +36,11 @@ public class Message {
         this.index = index;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 
