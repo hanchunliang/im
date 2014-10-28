@@ -25,6 +25,8 @@ public class DialogCache implements DialogCacheInterface {
         Map dialogMap = new ConcurrentHashMap<String,Object>();
         if (dialogInfo==null){
             dialogInfo = new HashMap<String, String>();
+        }else{
+            dialogInfo = new HashMap<String, String>(dialogInfo);
         }
         dialogMap.put(key_info,dialogInfo);
         dialogMap.put(key_msg,new LinkedList<Message>());
@@ -34,7 +36,7 @@ public class DialogCache implements DialogCacheInterface {
 
 
     @Override
-    public void setDialogInfo(String group, String dialogId, Map<String, String> dialogInfo) {
+    public void updateDialogInfo(String group, String dialogId, Map<String, String> dialogInfo) {
         Map<String, String> info = dialogInfo(group,dialogId);
         if (info!=null){
             synchronized (info){
@@ -52,7 +54,7 @@ public class DialogCache implements DialogCacheInterface {
         if (groupMap!=null){
             Map<String,Map> dialogMap = groupMap.get(dialogId);
             if (dialogMap!=null){
-                dialogInfo = dialogMap.get(key_info);
+                dialogInfo = new HashMap<String, String>(dialogMap.get(key_info));
             }
         }
         return dialogInfo;
@@ -78,7 +80,7 @@ public class DialogCache implements DialogCacheInterface {
         if (groupMap!=null) {
             Map dialogMap = groupMap.get(dialogId);
             if (dialogMap!=null){
-                return (List<Message>) dialogMap.get(key_msg);
+                return new ArrayList<Message>((List<Message>) dialogMap.get(key_msg));
             }
         }
         return null;
@@ -86,16 +88,17 @@ public class DialogCache implements DialogCacheInterface {
 
     @Override
     public void write(String group, String dialogId, Message message) {
+        Message m = new Message(message);
         Map<String,Map> groupMap = cache.get(group);
         if (groupMap!=null) {
             Map dialogMap = groupMap.get(dialogId);
             if (dialogMap!=null){
                 List<Message> messageQueue = (List<Message>) dialogMap.get(key_msg);
                 synchronized (messageQueue){
-                    if (message.getTime()==null){
-                        message.setTime(new Date());
+                    if (m.getTime()==null){
+                        m.setTime(new Date());
                     }
-                    messageQueue.add(message);
+                    messageQueue.add(m);
                 }
             }
         }

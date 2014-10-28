@@ -34,14 +34,14 @@ public class DialogPanel {
     public void updateDialogInfo(String name,String value){
         Map<String,String> dialogInfo = new HashMap<String, String>();
         dialogInfo.put(name,value);
-        DependenceRoot.dialogCache.setDialogInfo(group,dialogId,dialogInfo);
+        DependenceRoot.dialogCache.updateDialogInfo(group, dialogId, dialogInfo);
     }
     /**
      * 设置对话信息
      * @param dialogInfo 对话信息
      */
     public void updateDialogInfo(Map<String,String> dialogInfo){
-        DependenceRoot.dialogCache.setDialogInfo(group,dialogId,dialogInfo);
+        DependenceRoot.dialogCache.updateDialogInfo(group, dialogId, dialogInfo);
     }
     /**
      * 添加消息

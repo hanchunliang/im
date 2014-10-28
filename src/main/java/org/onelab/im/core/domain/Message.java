@@ -24,6 +24,15 @@ public class Message {
      */
     private Date time;
 
+    public Message(){}
+
+    public Message(Message message) {
+        this.type = message.type;
+        this.content = message.content;
+        this.author = message.author;
+        this.time = message.time;
+    }
+
     public int getType() {
         return type;
     }

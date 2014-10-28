@@ -20,12 +20,12 @@ public interface DialogCacheInterface {
     void cache(String group,String dialogId,Map<String,String> dialogInfo);
 
     /**
-     * 设置对话信息
+     * 更新对话信息
      * @param group
      * @param dialogId
-     * @param dialogInfo
+     * @param dialogInfo 对话信息
      */
-    void setDialogInfo(String group, String dialogId,Map<String,String> dialogInfo);
+    void updateDialogInfo(String group, String dialogId, Map<String, String> dialogInfo);
 
     /**
      * 获取给定对话的信息
