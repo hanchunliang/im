@@ -26,7 +26,6 @@ public class DialogPanel {
     public Map<String,String> getDialogInfo(){
         return DependenceRoot.dialogCache.dialogInfo(group, dialogId);
     }
-
     /**
      * 设置对话信息
      * @param name 属性
@@ -37,7 +36,6 @@ public class DialogPanel {
         dialogInfo.put(name,value);
         DependenceRoot.dialogCache.setDialogInfo(group,dialogId,dialogInfo);
     }
-
     /**
      * 设置对话信息
      * @param dialogInfo 对话信息
