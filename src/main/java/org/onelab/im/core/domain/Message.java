@@ -8,10 +8,6 @@ import java.util.Date;
  */
 public class Message {
     /**
-     * 序号
-     */
-    private int index;
-    /**
      * 类型
      */
     private int type;
@@ -27,14 +23,6 @@ public class Message {
      * 书写时间
      */
     private Date time;
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
 
     public int getType() {
         return type;
