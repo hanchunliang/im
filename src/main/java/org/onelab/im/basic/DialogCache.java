@@ -32,19 +32,6 @@ public class DialogCache implements DialogCacheInterface {
     }
 
     @Override
-    public void remove(String group, String dialogId) {
-        Map dialog = cache.get(group);
-        if (dialog!=null){
-            dialog.remove(dialogId);
-        }
-    }
-
-    @Override
-    public void remove(String group) {
-        cache.remove(group);
-    }
-
-    @Override
     public void setDialogInfo(String group, String dialogId, Map<String, String> dialogInfo) {
         Map<String, String> info = dialogInfo(group,dialogId);
         if (info!=null){
@@ -124,5 +111,18 @@ public class DialogCache implements DialogCacheInterface {
             return new ArrayList<String>(dialogMap.keySet());
         }
         return null;
+    }
+
+    @Override
+    public void remove(String group) {
+        cache.remove(group);
+    }
+
+    @Override
+    public void remove(String group, String dialogId) {
+        Map dialog = cache.get(group);
+        if (dialog!=null){
+            dialog.remove(dialogId);
+        }
     }
 }
