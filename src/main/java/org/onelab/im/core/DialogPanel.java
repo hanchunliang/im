@@ -3,6 +3,7 @@ package org.onelab.im.core;
 import org.onelab.im.core.domain.DependenceRoot;
 import org.onelab.im.core.domain.Message;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -37,8 +38,7 @@ public class DialogPanel {
      * @return 当前对话的所有消息 [如果不存在给定对话对话,返回null]
      */
     public List<Message> read(){
-        List<Message> messages = DependenceRoot.dialogCache.read(group,dialogId);
-        return messages;
+        return DependenceRoot.dialogCache.read(group,dialogId);
     }
     /**
      * 从指定条目开始获取消息
@@ -47,8 +47,16 @@ public class DialogPanel {
      */
     public List<Message> read(int startIndex){
         List<Message> messages = read();
-        if (startIndex<0) startIndex = 0;
-        return messages.subList(startIndex,messages.size());
+        if (messages!=null){
+            int size = messages.size();
+            if (startIndex>=size){
+                messages = Collections.EMPTY_LIST;
+            } else {
+                if (startIndex<0) startIndex = 0;
+                messages = messages.subList(startIndex,size);
+            }
+        }
+        return messages;
     }
     /**
      * 从指定条目开始顺序获取指定条目数的消息
@@ -58,8 +66,17 @@ public class DialogPanel {
      */
     public List<Message> read(int startIndex,int len){
         List<Message> messages = read();
-        int endIndex = startIndex+len;
-        if (endIndex>messages.size()) endIndex = messages.size();
-        return messages.subList(startIndex,endIndex);
+        if (messages!=null){
+            int size = messages.size();
+            if (startIndex>=size){
+                messages = Collections.EMPTY_LIST;
+            } else {
+                if (startIndex<0) startIndex = 0;
+                int endIndex = startIndex+len;
+                if (endIndex>size) endIndex = size;
+                messages = messages.subList(startIndex,endIndex);
+            }
+        }
+        return messages;
     }
 }
