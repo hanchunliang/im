@@ -23,9 +23,10 @@ public class DialogCache implements DialogCacheInterface {
             cache.put(group, groupMap);
         }
         Map dialogMap = new ConcurrentHashMap<String,Object>();
-        if (dialogInfo!=null){
-            dialogMap.put(key_info,dialogInfo);
+        if (dialogInfo==null){
+            dialogInfo = new HashMap<String, String>();
         }
+        dialogMap.put(key_info,dialogInfo);
         dialogMap.put(key_msg,new LinkedList<Message>());
         groupMap.put(dialogId,dialogMap);
     }
@@ -44,29 +45,28 @@ public class DialogCache implements DialogCacheInterface {
     }
 
     @Override
-    public List<String> groups() {
-        return new ArrayList<String>(cache.keySet());
-    }
-
-    @Override
-    public List<String> dialogIds(String group) {
-        Map<String,Map> dialogMap = cache.get(group);
-        if (dialogMap!=null){
-            return new ArrayList<String>(dialogMap.keySet());
+    public void setDialogInfo(String group, String dialogId, Map<String, String> dialogInfo) {
+        Map<String, String> info = dialogInfo(group,dialogId);
+        if (info!=null){
+            synchronized (info){
+                for (Map.Entry<String,String> entry:dialogInfo.entrySet()){
+                    info.put(entry.getKey(),entry.getValue());
+                }
+            }
         }
-        return null;
     }
 
     @Override
     public Map<String, String> dialogInfo(String group, String dialogId) {
         Map<String,Map> groupMap = cache.get(group);
+        Map<String, String> dialogInfo = null;
         if (groupMap!=null){
             Map<String,Map> dialogMap = groupMap.get(dialogId);
             if (dialogMap!=null){
-                return dialogMap.get(key_info);
+                dialogInfo = dialogMap.get(key_info);
             }
         }
-        return null;
+        return dialogInfo;
     }
 
     @Override
@@ -77,9 +77,7 @@ public class DialogCache implements DialogCacheInterface {
             res = new HashMap<String, Map<String, String>>();
             for (Map.Entry<String,Map> dialogEntry:groupMap.entrySet()){
                 Map<String, String> dialogInfo = (Map<String, String>) dialogEntry.getValue().get(key_info);
-                if (dialogInfo!=null){
-                    res.put(dialogEntry.getKey(), dialogInfo);
-                }
+                res.put(dialogEntry.getKey(), dialogInfo);
             }
         }
         return res;
@@ -112,5 +110,19 @@ public class DialogCache implements DialogCacheInterface {
                 }
             }
         }
+    }
+
+    @Override
+    public List<String> groups() {
+        return new ArrayList<String>(cache.keySet());
+    }
+
+    @Override
+    public List<String> dialogIds(String group) {
+        Map<String,Map> dialogMap = cache.get(group);
+        if (dialogMap!=null){
+            return new ArrayList<String>(dialogMap.keySet());
+        }
+        return null;
     }
 }

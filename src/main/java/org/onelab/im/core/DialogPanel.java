@@ -4,6 +4,7 @@ import org.onelab.im.core.domain.DependenceRoot;
 import org.onelab.im.core.domain.Message;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +24,26 @@ public class DialogPanel {
      * @return 对话信息 [如果不存在给定对话对话,返回null]
      */
     public Map<String,String> getDialogInfo(){
-        Map<String,String> dialogInfo = DependenceRoot.dialogCache.dialogInfo(group, dialogId);
-        return dialogInfo;
+        return DependenceRoot.dialogCache.dialogInfo(group, dialogId);
+    }
+
+    /**
+     * 设置对话信息
+     * @param name 属性
+     * @param value 值
+     */
+    public void setDialogInfo(String name,String value){
+        Map<String,String> dialogInfo = new HashMap<String, String>();
+        dialogInfo.put(name,value);
+        DependenceRoot.dialogCache.setDialogInfo(group,dialogId,dialogInfo);
+    }
+
+    /**
+     * 设置对话信息
+     * @param dialogInfo 对话信息
+     */
+    public void setDialogInfo(Map<String,String> dialogInfo){
+        DependenceRoot.dialogCache.setDialogInfo(group,dialogId,dialogInfo);
     }
     /**
      * 添加消息

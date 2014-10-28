@@ -27,23 +27,18 @@ public interface DialogCacheInterface {
     void remove(String group,String dialogId);
 
     /**
-     * 删除给定对话组的对话信息
+     * 删除给定对话组的对话
      * @param group 对话组
      */
     void remove(String group);
 
     /**
-     * 获取所有对话组
-     * @return 对话组
+     * 设置对话信息
+     * @param group
+     * @param dialogId
+     * @param dialogInfo
      */
-    List<String> groups();
-
-    /**
-     * 获取给定对话组下的对话ID
-     * @param group 对话组
-     * @return 对话ID [如果不存在给定给定对话组,返回null]
-     */
-    List<String> dialogIds(String group);
+    void setDialogInfo(String group, String dialogId,Map<String,String> dialogInfo);
 
     /**
      * 获取给定对话的信息
@@ -75,4 +70,17 @@ public interface DialogCacheInterface {
      * @param message 消息
      */
     void write(String group,String dialogId,Message message);
+
+    /**
+     * 获取所有对话组
+     * @return 对话组
+     */
+    List<String> groups();
+
+    /**
+     * 获取给定对话组下的对话ID
+     * @param group 对话组
+     * @return 对话ID [如果不存在给定给定对话组,返回null]
+     */
+    List<String> dialogIds(String group);
 }
