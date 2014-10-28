@@ -7,10 +7,11 @@ import java.util.Map;
  * Created by chunliangh on 14-10-23.
  */
 public class Dialog {
-    public Dialog(String group,String id,Map<String,String> info){
+    public Dialog(String group,String id,Map<String,String> info,List<Message> messages){
         this.group = group;
         this.id = id;
         this.info = info;
+        this.messages = messages;
     }
     /**
      * 对话所属范围

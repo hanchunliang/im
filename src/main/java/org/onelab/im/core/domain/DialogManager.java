@@ -38,7 +38,8 @@ public class DialogManager {
         if (dialogIds!=null){
             for (String dialogId:dialogIds){
                 Map<String,String> dialogInfo = DependenceRoot.dialogCache.dialogInfo(group,dialogId);
-                Dialog dialog = new Dialog(group,dialogId,dialogInfo);
+                List<Message> messages = DependenceRoot.dialogCache.read(group,dialogId);
+                Dialog dialog = new Dialog(group,dialogId,dialogInfo,messages);
                 dialogs.add(dialog);
             }
         }
@@ -57,7 +58,8 @@ public class DialogManager {
      */
     public void destroyDialog(String group, String dialogId) {
         Map<String,String> dialogInfo = DependenceRoot.dialogCache.dialogInfo(group,dialogId);
-        Dialog dialog = new Dialog(group,dialogId,dialogInfo);
+        List<Message> messages = DependenceRoot.dialogCache.read(group,dialogId);
+        Dialog dialog = new Dialog(group,dialogId,dialogInfo,messages);
         //删除缓存中记录
         DependenceRoot.dialogCache.remove(group,dialogId);
         //持久化dialog

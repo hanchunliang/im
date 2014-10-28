@@ -11,11 +11,9 @@ import java.util.List;
 public class DialogPersistence implements DialogPersistenceInterface {
     @Override
     public void persist(Dialog dialog) {
-
     }
 
     @Override
     public void persist(List<Dialog> dialogs) {
-
     }
 }
