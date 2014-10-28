@@ -104,7 +104,12 @@ public class DialogCache implements DialogCacheInterface {
             Map dialogMap = groupMap.get(dialogId);
             if (dialogMap!=null){
                 List<Message> messageQueue = (List<Message>) dialogMap.get(key_msg);
-                messageQueue.add(message);
+                synchronized (messageQueue){
+                    if (message.getTime()==null){
+                        message.setTime(new Date());
+                    }
+                    messageQueue.add(message);
+                }
             }
         }
     }
