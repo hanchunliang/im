@@ -5,6 +5,7 @@ import org.onelab.im.core.domain.Message;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by chunliangh on 14-10-21.
@@ -24,12 +25,12 @@ public class DialogCache implements DialogCacheInterface {
         }
         Map dialogMap = new ConcurrentHashMap<String,Object>();
         if (dialogInfo==null){
-            dialogInfo = new HashMap<String, String>();
+            dialogInfo = new ConcurrentHashMap<String, String>();
         }else{
-            dialogInfo = new HashMap<String, String>(dialogInfo);
+            dialogInfo = new ConcurrentHashMap<String, String>(dialogInfo);
         }
         dialogMap.put(key_info,dialogInfo);
-        dialogMap.put(key_msg,new LinkedList<Message>());
+        dialogMap.put(key_msg,new ConcurrentLinkedQueue<Message>());
         groupMap.put(dialogId,dialogMap);
     }
 
@@ -39,10 +40,8 @@ public class DialogCache implements DialogCacheInterface {
     public void updateDialogInfo(String group, String dialogId, Map<String, String> dialogInfo) {
         Map<String, String> info = dialogInfo(group,dialogId);
         if (info!=null){
-            synchronized (info){
-                for (Map.Entry<String,String> entry:dialogInfo.entrySet()){
-                    info.put(entry.getKey(),entry.getValue());
-                }
+            for (Map.Entry<String,String> entry:dialogInfo.entrySet()){
+                info.put(entry.getKey(),entry.getValue());
             }
         }
     }
@@ -68,7 +67,7 @@ public class DialogCache implements DialogCacheInterface {
             res = new HashMap<String, Map<String, String>>();
             for (Map.Entry<String,Map> dialogEntry:groupMap.entrySet()){
                 Map<String, String> dialogInfo = (Map<String, String>) dialogEntry.getValue().get(key_info);
-                res.put(dialogEntry.getKey(), dialogInfo);
+                res.put(dialogEntry.getKey(), new HashMap<String, String>(dialogInfo));
             }
         }
         return res;
@@ -80,7 +79,7 @@ public class DialogCache implements DialogCacheInterface {
         if (groupMap!=null) {
             Map dialogMap = groupMap.get(dialogId);
             if (dialogMap!=null){
-                return new ArrayList<Message>((List<Message>) dialogMap.get(key_msg));
+                return new ArrayList<Message>((Queue<Message>) dialogMap.get(key_msg));
             }
         }
         return null;
@@ -93,13 +92,11 @@ public class DialogCache implements DialogCacheInterface {
         if (groupMap!=null) {
             Map dialogMap = groupMap.get(dialogId);
             if (dialogMap!=null){
-                List<Message> messageQueue = (List<Message>) dialogMap.get(key_msg);
-                synchronized (messageQueue){
-                    if (m.getTime()==null){
-                        m.setTime(new Date());
-                    }
-                    messageQueue.add(m);
+                Queue<Message> messageQueue = (Queue<Message>) dialogMap.get(key_msg);
+                if (m.getTime()==null){
+                    m.setTime(new Date());
                 }
+                messageQueue.offer(m);
             }
         }
     }
