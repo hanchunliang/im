@@ -31,6 +31,8 @@ public class DialogCache implements DialogCacheInterface {
         groupMap.put(dialogId,dialogMap);
     }
 
+
+
     @Override
     public void setDialogInfo(String group, String dialogId, Map<String, String> dialogInfo) {
         Map<String, String> info = dialogInfo(group,dialogId);

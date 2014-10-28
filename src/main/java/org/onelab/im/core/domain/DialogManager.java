@@ -6,7 +6,7 @@ import org.onelab.im.core.DialogPanel;
 import java.util.*;
 
 /**
- * 对话生命周期管理器：创建对话，销毁对话，持久化对话
+ * 对话管理器，创建对话，销毁对话，获取对话板
  * Created by chunliangh on 14-10-21.
  */
 public class DialogManager {

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 对话版。读写对话，一个对话有且仅有一个对话板
+ * 对话版。读写消息，查看或更新对话信息
  * Created by chunliangh on 14-10-20.
  */
 public class DialogPanel {
@@ -31,7 +31,7 @@ public class DialogPanel {
      * @param name 属性
      * @param value 值
      */
-    public void setDialogInfo(String name,String value){
+    public void updateDialogInfo(String name,String value){
         Map<String,String> dialogInfo = new HashMap<String, String>();
         dialogInfo.put(name,value);
         DependenceRoot.dialogCache.setDialogInfo(group,dialogId,dialogInfo);
@@ -40,7 +40,7 @@ public class DialogPanel {
      * 设置对话信息
      * @param dialogInfo 对话信息
      */
-    public void setDialogInfo(Map<String,String> dialogInfo){
+    public void updateDialogInfo(Map<String,String> dialogInfo){
         DependenceRoot.dialogCache.setDialogInfo(group,dialogId,dialogInfo);
     }
     /**
