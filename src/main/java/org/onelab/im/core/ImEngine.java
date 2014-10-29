@@ -14,8 +14,8 @@ public class ImEngine {
     private static DialogManager dialogManager = DialogManager.getInstance();
     /**
      * 创建对话
-     * @param group mustNot null 对话组
-     * @param dialogId mustNot null 对话ID
+     * @param group not null 对话组
+     * @param dialogId not null 对话ID
      */
     public static void createDialog(String group,String dialogId,Map<String,String> dialogInfo){
         assert group!=null;
@@ -25,8 +25,8 @@ public class ImEngine {
 
     /**
      *
-     * @param group mustNot null 对话组
-     * @param dialogId mustNot null 对话ID
+     * @param group not null 对话组
+     * @param dialogId not null 对话ID
      * @return false 不存在，true 存在
      */
     public static boolean hasDialog(String group,String dialogId){
@@ -47,7 +47,7 @@ public class ImEngine {
     }
     /**
      * 关闭给定对话组的对话
-     * @param group 对话组 mustNot null
+     * @param group 对话组 not null
      */
     public static void destroyDialog(String group){
         assert group!=null;
@@ -55,8 +55,8 @@ public class ImEngine {
     }
     /**
      * 关闭给定对话
-     * @param group 对话组 mustNot null
-     * @param dialogId 对话ID mustNot null
+     * @param group 对话组 not null
+     * @param dialogId 对话ID not null
      */
     public static void destroyDialog(String group,String dialogId){
         assert group!=null;
@@ -65,8 +65,8 @@ public class ImEngine {
     }
     /**
      * 获取对话板
-     * @param group 对话组 mustNot null
-     * @param dialogId 对话ID mustNot null
+     * @param group 对话组 not null
+     * @param dialogId 对话ID not null
      * @return
      */
     public static DialogPanel getDialogPanel(String group,String dialogId){
@@ -76,7 +76,7 @@ public class ImEngine {
     }
     /**
      * 获取对话板
-     * @param group mustNot null
+     * @param group not null
      * @return
      */
     public static List<DialogPanel> getDialogPanels(String group){
@@ -86,8 +86,8 @@ public class ImEngine {
 
     /**
      * 获取对话板
-     * @param group mustNot null
-     * @param dialogIds mustNot null
+     * @param group not null
+     * @param dialogIds not null
      * @return
      */
     public static List<DialogPanel> getDialogPanels(String group,Collection<String> dialogIds){
@@ -98,8 +98,8 @@ public class ImEngine {
 
     /**
      * 获取对话板
-     * @param group mustNot null
-     * @param condition mustNot null
+     * @param group not null
+     * @param condition not null
      * @return
      */
     public static List<DialogPanel> getDialogPanels(String group,Condition condition){
