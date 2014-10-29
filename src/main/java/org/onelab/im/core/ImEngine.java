@@ -16,15 +16,6 @@ import java.util.Map;
 public class ImEngine {
     private static DialogManager dialogManager = DialogManager.getInstance();
     /**
-     * 开启IM引擎
-     * @param dialogCache 外部提供。null表示使用IM引擎提供的默认值
-     * @param dialogPersistence 外部提供。null表示使用IM引擎提供的默认值
-     * @throws Exception
-     */
-    public static void start(DialogCacheInterface dialogCache,DialogPersistenceInterface dialogPersistence){
-        DependenceRoot.init(dialogCache, dialogPersistence);
-    }
-    /**
      * 创建对话
      * @param group mustNot null 对话组
      * @param dialogId mustNot null 对话ID
@@ -118,11 +109,5 @@ public class ImEngine {
         assert group!=null;
         assert condition != null;
         return dialogManager.getDialogPanel(group, condition);
-    }
-    /**
-     * 停止IM引擎
-     */
-    public static void stop() {
-        ImEngine.destroyDialog();
     }
 }
