@@ -1,9 +1,6 @@
 package org.onelab.im.core;
 
-import org.onelab.im.core.domain.DependenceRoot;
 import org.onelab.im.core.domain.DialogManager;
-import org.onelab.im.dependence.DialogCacheInterface;
-import org.onelab.im.dependence.DialogPersistenceInterface;
 
 import java.util.Collection;
 import java.util.List;
@@ -84,7 +81,7 @@ public class ImEngine {
      */
     public static List<DialogPanel> getDialogPanels(String group){
         assert group!=null;
-        return dialogManager.getDialogPanel(group);
+        return dialogManager.getDialogPanels(group);
     }
 
     /**
@@ -96,7 +93,7 @@ public class ImEngine {
     public static List<DialogPanel> getDialogPanels(String group,Collection<String> dialogIds){
         assert group!=null;
         assert dialogIds!=null;
-        return dialogManager.getDialogPanel(group,dialogIds);
+        return dialogManager.getDialogPanels(group, dialogIds);
     }
 
     /**
@@ -108,6 +105,6 @@ public class ImEngine {
     public static List<DialogPanel> getDialogPanels(String group,Condition condition){
         assert group!=null;
         assert condition != null;
-        return dialogManager.getDialogPanel(group, condition);
+        return dialogManager.getDialogPanels(group, condition);
     }
 }

@@ -90,7 +90,7 @@ public class DialogManager {
      * @param group
      * @return
      */
-    public List<DialogPanel> getDialogPanel(String group) {
+    public List<DialogPanel> getDialogPanels(String group) {
         List<DialogPanel> dialogPanels = new ArrayList<DialogPanel>();
         List<String> dialogIds = DependenceRoot.dialogCache.dialogIds(group);
         if (dialogIds!=null){
@@ -107,7 +107,7 @@ public class DialogManager {
      * @param dialogIds
      * @return
      */
-    public List<DialogPanel> getDialogPanel(String group, Collection<String> dialogIds) {
+    public List<DialogPanel> getDialogPanels(String group, Collection<String> dialogIds) {
         List<DialogPanel> dialogPanels = new ArrayList<DialogPanel>();
         List<String> dialogIdList = DependenceRoot.dialogCache.dialogIds(group);
         if (dialogIds!=null){
@@ -120,15 +120,10 @@ public class DialogManager {
         return dialogPanels;
     }
 
-    public List<DialogPanel> getDialogPanel(String group, Condition condition) {
-        List<String> dialogIds ;
-        if (condition.isEmpty()){
-            dialogIds = DependenceRoot.dialogCache.dialogIds(group);
-        }else{
-            Map<String,Map<String,String>> dialogInfoMap = DependenceRoot.dialogCache.dialogInfoMap(group);
-            dialogIds = getDialogIds(condition,dialogInfoMap);
-        }
-        return getDialogPanel(group,dialogIds);
+    public List<DialogPanel> getDialogPanels(String group, Condition condition) {
+        Map<String,Map<String,String>> dialogInfoMap = DependenceRoot.dialogCache.dialogInfoMap(group);
+        List<String> dialogIds = getDialogIds(condition,dialogInfoMap);
+        return getDialogPanels(group, dialogIds);
     }
 
     public List<String> getGroups() {
