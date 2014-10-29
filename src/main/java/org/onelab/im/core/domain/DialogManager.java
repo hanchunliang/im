@@ -172,7 +172,7 @@ public class DialogManager {
             res = gte(dialogInfo, gte);
         }
         Condition or = condition.getOr();
-        if (!res && or!=null){//如果条件校验不满足，且or非空，则继续校验or
+        if (!res && or!=null && !or.isEmpty()){//如果条件校验不满足，且or非空，则继续校验or
             return checkCondition(or,dialogInfo);
         }
         return res;
