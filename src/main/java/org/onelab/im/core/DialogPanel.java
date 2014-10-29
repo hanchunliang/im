@@ -19,6 +19,15 @@ public class DialogPanel {
         this.group = group;
         this.dialogId = dialogId;
     }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public String getDialogId() {
+        return dialogId;
+    }
+
     /**
      * 获取对话信息
      * @return 对话信息 [如果不存在给定对话对话,返回null]
