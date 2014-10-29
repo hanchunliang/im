@@ -34,6 +34,18 @@ public class ImEngine {
         assert dialogId!=null;
         dialogManager.createDialog(group, dialogId, dialogInfo);
     }
+
+    /**
+     *
+     * @param group mustNot null 对话组
+     * @param dialogId mustNot null 对话ID
+     * @return false 不存在，true 存在
+     */
+    public static boolean hasDialog(String group,String dialogId){
+        assert group!=null;
+        assert dialogId!=null;
+        return dialogManager.hasDialog(group,dialogId);
+    }
     /**
      * 关闭所有对话
      */

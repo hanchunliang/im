@@ -29,6 +29,15 @@ public class DialogManager {
     };
 
     /**
+     * 判断对话是否存在
+     * @param group
+     * @param dialogId
+     * @return
+     */
+    public boolean hasDialog(String group,String dialogId){
+        return DependenceRoot.dialogCache.exist(group,dialogId);
+    }
+    /**
      * 关闭给定对话组的对话
      * @param group
      */
