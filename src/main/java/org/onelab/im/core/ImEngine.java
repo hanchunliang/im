@@ -105,6 +105,10 @@ public class ImEngine {
     public static List<DialogPanel> getDialogPanels(String group,Condition condition){
         assert group!=null;
         assert condition != null;
-        return dialogManager.getDialogPanels(group, condition);
+        if (condition.isEmpty()){
+            return dialogManager.getDialogPanels(group);
+        }else{
+            return dialogManager.getDialogPanels(group, condition);
+        }
     }
 }
