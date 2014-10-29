@@ -15,6 +15,10 @@ public class Condition {
 
     public Condition(){}
 
+    public boolean isEmpty(){
+        return must.isEmpty()&&or.isEmpty()&&mustNot.isEmpty();
+    }
+
     public Condition must(String name,String value){
         must.put(name, value);
         return this;

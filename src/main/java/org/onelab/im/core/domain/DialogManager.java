@@ -121,8 +121,13 @@ public class DialogManager {
     }
 
     public List<DialogPanel> getDialogPanel(String group, Condition condition) {
-        Map<String,Map<String,String>> dialogInfoMap = DependenceRoot.dialogCache.dialogInfoMap(group);
-        List<String> dialogIds = getDialogIds(condition,dialogInfoMap);
+        List<String> dialogIds ;
+        if (condition.isEmpty()){
+            dialogIds = DependenceRoot.dialogCache.dialogIds(group);
+        }else{
+            Map<String,Map<String,String>> dialogInfoMap = DependenceRoot.dialogCache.dialogInfoMap(group);
+            dialogIds = getDialogIds(condition,dialogInfoMap);
+        }
         return getDialogPanel(group,dialogIds);
     }
 
