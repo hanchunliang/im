@@ -34,7 +34,14 @@ public class DialogCache implements DialogCacheInterface {
         groupMap.put(dialogId,dialogMap);
     }
 
-
+    @Override
+    public boolean exist(String group, String dialogId){
+        Map<String,Map> groupMap = cache.get(group);
+        if (groupMap!=null){
+            return groupMap.containsKey(dialogId);
+        }
+        return false;
+    }
 
     @Override
     public void updateDialogInfo(String group, String dialogId, Map<String, String> dialogInfo) {

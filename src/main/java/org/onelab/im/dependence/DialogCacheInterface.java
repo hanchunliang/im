@@ -20,6 +20,14 @@ public interface DialogCacheInterface {
     void cache(String group,String dialogId,Map<String,String> dialogInfo);
 
     /**
+     * 判断对话是否存在
+     * @param group
+     * @param dialogId
+     * @return
+     */
+    boolean exist(String group, String dialogId);
+
+    /**
      * 更新对话信息
      * @param group
      * @param dialogId

@@ -19,6 +19,9 @@ public class DialogPanel {
         this.group = group;
         this.dialogId = dialogId;
     }
+    public boolean active(){
+        return DependenceRoot.dialogCache.exist(group,dialogId);
+    }
     /**
      * 获取对话信息
      * @return 对话信息 [如果不存在给定对话对话,返回null]
