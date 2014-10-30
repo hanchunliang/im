@@ -1,10 +1,8 @@
 package org.onelab.im.core.domain;
 
-import com.sun.tools.classfile.LineNumberTable_attribute;
 import org.onelab.im.core.Condition;
 import org.onelab.im.core.DialogPanel;
 
-import java.text.NumberFormat;
 import java.util.*;
 
 /**
