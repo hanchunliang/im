@@ -3,6 +3,7 @@ package org.onelab.im.core.domain;
 import org.onelab.im.core.Condition;
 import org.onelab.im.core.DialogPanel;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -219,9 +220,9 @@ public class DialogManager {
         String val_2 = condition.getValue();
         if (val_1==null || val_2==null) return false;
         try {
-            float v1 = Float.parseFloat(val_1);
-            float v2 = Float.parseFloat(val_2);
-            if (v2>=v1) return false;
+            BigDecimal v1 = new BigDecimal(val_1);
+            BigDecimal v2 = new BigDecimal(val_2);
+            if (v2.compareTo(v1)>=0) return false;
         } catch (NumberFormatException e){
             if (val_2.compareTo(val_1)>=0) return false;
         }
@@ -233,9 +234,9 @@ public class DialogManager {
         String val_2 = condition.getValue();
         if (val_1==null || val_2==null) return false;
         try {
-            float v1 = Float.parseFloat(val_1);
-            float v2 = Float.parseFloat(val_2);
-            if (v2<=v1) return false;
+            BigDecimal v1 = new BigDecimal(val_1);
+            BigDecimal v2 = new BigDecimal(val_2);
+            if (v2.compareTo(v1)<=0) return false;
         } catch (NumberFormatException e){
             if (val_2.compareTo(val_1)<=0) return false;
         }
@@ -247,9 +248,9 @@ public class DialogManager {
         String val_2 = condition.getValue();
         if (val_1==null || val_2==null) return false;
         try {
-            float v1 = Float.parseFloat(val_1);
-            float v2 = Float.parseFloat(val_2);
-            if (v2>v1) return false;
+            BigDecimal v1 = new BigDecimal(val_1);
+            BigDecimal v2 = new BigDecimal(val_2);
+            if (v2.compareTo(v1)>0) return false;
         } catch (NumberFormatException e){
             if (val_2.compareTo(val_1)>0) return false;
         }
@@ -261,9 +262,9 @@ public class DialogManager {
         String val_2 = condition.getValue();
         if (val_1==null || val_2==null) return false;
         try {
-            float v1 = Float.parseFloat(val_1);
-            float v2 = Float.parseFloat(val_2);
-            if (v2<v1) return false;
+            BigDecimal v1 = new BigDecimal(val_1);
+            BigDecimal v2 = new BigDecimal(val_2);
+            if (v2.compareTo(v1)<0) return false;
         } catch (NumberFormatException e){
             if (val_2.compareTo(val_1)<0) return false;
         }
