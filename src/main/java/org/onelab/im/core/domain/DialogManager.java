@@ -174,13 +174,19 @@ public class DialogManager {
                 res = notIn(dialogInfo, condition);
                 break;
         }
-        Condition and = condition.getAnd();
+        List<Condition> and = condition.getAnd();
         if (res && and!=null){
-            res = checkCondition(and, dialogInfo);
+            for (Condition c:and){
+                res = checkCondition(c, dialogInfo);
+                if (!res) break;
+            }
         }
-        Condition or = condition.getOr();
+        List<Condition> or = condition.getOr();
         if (!res && or!=null){
-            res = checkCondition(or, dialogInfo);
+            for (Condition c:or){
+                res = checkCondition(c, dialogInfo);
+                if (res) break;
+            }
         }
         return res;
     }

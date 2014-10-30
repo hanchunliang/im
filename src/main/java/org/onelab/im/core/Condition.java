@@ -1,8 +1,6 @@
 package org.onelab.im.core;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 筛选条件
@@ -10,17 +8,24 @@ import java.util.Map;
  */
 public class Condition {
 
+    public static enum Operator {
+        EQ,NQ,GT,LT,GTE,LTE,MATCH,IN,NOT_IN,NONE
+    }
+
     private Operator operator;
+
     private String name ;
     private String value ;
     private Collection<String> values;
 
-    public static enum Operator {
-        EQ,NQ,GT,LT,GTE,LTE,MATCH,IN,NOT_IN
-    }
-    private Condition or ;
-    private Condition and ;
+    private List<Condition> or ;
+    private List<Condition> and ;
+
     private Condition parent ;
+
+    public Condition(){
+        this.operator = Operator.NONE;
+    }
 
     public Condition(Operator operator,String name,String value){
         assert operator !=null;
@@ -36,11 +41,17 @@ public class Condition {
         this.name = name;
         this.values = values;
     }
-
+    public boolean isEmpty(){
+        if (this.operator!=Operator.NONE || this.and!=null || this.or!=null) {
+            return false;
+        }
+        return true;
+    }
     public Condition or(Condition condition){
         assert condition!=this;
         assert condition.parent == null;
-        this.or = condition;
+        if (or==null) or = new LinkedList<Condition>();
+        or.add(condition);
         condition.parent = this;
         return this;
     }
@@ -48,7 +59,8 @@ public class Condition {
     public Condition and(Condition condition){
         assert condition!=this;
         assert condition.parent == null;
-        this.and = condition;
+        if (and==null) and = new LinkedList<Condition>();
+        and.add(condition);
         condition.parent = this;
         return this;
     }
@@ -69,11 +81,11 @@ public class Condition {
         return values;
     }
 
-    public Condition getOr() {
+    public List<Condition> getOr() {
         return or;
     }
 
-    public Condition getAnd() {
+    public List<Condition> getAnd() {
         return and;
     }
 }
