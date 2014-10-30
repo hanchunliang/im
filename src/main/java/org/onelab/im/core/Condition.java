@@ -1,5 +1,6 @@
 package org.onelab.im.core;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,8 +16,15 @@ public class Condition {
     Map<String,String> lt ;
     Map<String,String> gte ;
     Map<String,String> lte ;
+    Map<String,String> match ;
+
+    Map<String,Collection<String>> in ;
+    Map<String,Collection<String>> notIn ;
 
     Condition or = null;
+    Condition and = null;
+
+    Condition parent;
 
     public Condition(){}
 
@@ -25,13 +33,16 @@ public class Condition {
         if (nq!=null&&!nq.isEmpty()) return false;
         if (gt!=null&&!gt.isEmpty()) return false;
         if (lt!=null&&!lt.isEmpty()) return false;
-        if (or!=null&&!or.isEmpty()) return false;
-        return true;
-    }
+        if (gte!=null&&!gte.isEmpty()) return false;
+        if (lte!=null&&!lte.isEmpty()) return false;
+        if (match!=null&&!match.isEmpty()) return false;
 
-    public Condition or(Condition condition){
-        this.or = condition;
-        return this;
+        if (in!=null&&!in.isEmpty()) return false;
+        if (notIn!=null&&!notIn.isEmpty()) return false;
+
+        if (or!=null&&!or.isEmpty()) return false;
+        if (and!=null&&!and.isEmpty()) return false;
+        return true;
     }
 
     public Condition eq(String name, String value){
@@ -70,6 +81,40 @@ public class Condition {
         return this;
     }
 
+    public Condition match(String name,String regex){
+        if (match==null) match = new HashMap<String, String>();
+        match.put(name, regex);
+        return this;
+    }
+
+    public Condition in(String name,Collection<String> values){
+        if (in==null) in = new HashMap<String, Collection<String>>();
+        in.put(name, values);
+        return this;
+    }
+
+    public Condition notIn(String name,Collection<String> values){
+        if (notIn==null) notIn = new HashMap<String, Collection<String>>();
+        notIn.put(name, values);
+        return this;
+    }
+
+    public Condition or(Condition condition){
+        assert condition!=this;
+        assert condition.parent == null;
+        this.or = condition;
+        condition.parent = this;
+        return this;
+    }
+
+    public Condition and(Condition condition){
+        assert condition!=this;
+        assert condition.parent == null;
+        this.and = condition;
+        condition.parent = this;
+        return this;
+    }
+
     public Map<String,String> getEq() {
         return eq;
     }
@@ -94,7 +139,23 @@ public class Condition {
         return lte;
     }
 
+    public Map<String, String> getMatch() {
+        return match;
+    }
+
+    public Map<String, Collection<String>> getIn() {
+        return in;
+    }
+
+    public Map<String, Collection<String>> getNotIn() {
+        return notIn;
+    }
+
     public Condition getOr() {
         return or;
+    }
+
+    public Condition getAnd() {
+        return and;
     }
 }

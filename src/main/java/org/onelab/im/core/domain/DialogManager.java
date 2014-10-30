@@ -1,5 +1,6 @@
 package org.onelab.im.core.domain;
 
+import com.sun.tools.classfile.LineNumberTable_attribute;
 import org.onelab.im.core.Condition;
 import org.onelab.im.core.DialogPanel;
 
@@ -151,6 +152,10 @@ public class DialogManager {
         Map<String,String> lt = condition.getLt();
         Map<String,String> gte = condition.getGte();
         Map<String,String> lte = condition.getLte();
+        Map<String,String> match = condition.getMatch();
+
+        Map<String,Collection<String>> in = condition.getIn();
+        Map<String,Collection<String>> notIn = condition.getNotIn();
 
         boolean res = true;
         if (eq!=null && !eq.isEmpty()){
@@ -171,108 +176,151 @@ public class DialogManager {
         if (res && gte!=null && !gte.isEmpty()){
             res = gte(dialogInfo, gte);
         }
+        if (res && match!=null && !match.isEmpty()){
+            res = match(dialogInfo, match);
+        }
+        if (res && in!=null && !in.isEmpty()){
+            res = in(dialogInfo, in);
+        }
+        if (res && notIn!=null && !notIn.isEmpty()){
+            res = notIn(dialogInfo, notIn);
+        }
+        Condition and = condition.getAnd();
+        if (res && and!=null && !and.isEmpty()){
+            res = checkCondition(and,dialogInfo);
+        }
         Condition or = condition.getOr();
-        if (!res && or!=null && !or.isEmpty()){//如果条件校验不满足，且or非空，则继续校验or
-            return checkCondition(or,dialogInfo);
+        if (!res && or!=null && !or.isEmpty()){
+            res = checkCondition(or,dialogInfo);
         }
         return res;
     }
 
+    //如果相比较的两元素同为null认为相等
     private boolean eq(Map<String, String> map_1, Map<String, String> map_2) {
         Set<String> keySet_2 = map_2.keySet();
         for (String key:keySet_2){
-            if (!map_2.get(key).equals(map_1.get(key))){
-                return false;
+            String val_2 = map_2.get(key);
+            String val_1 = map_1.get(key);
+            if (val_2!=null){
+                if (!val_2.equals(val_1)) return false;
+            }else{
+                if (val_1!=null) return false;
             }
         }
         return true;
     }
-
+    //如果相比较的两元素同为null认为相等
     private boolean nq(Map<String, String> map_1, Map<String, String> map_2) {
         Set<String> keySet_2 = map_2.keySet();
         for (String key:keySet_2){
-            if (map_2.get(key).equals(map_1.get(key))){
-                return false;
+            String val_2 = map_2.get(key);
+            String val_1 = map_1.get(key);
+            if (val_2!=null){
+                if (val_2.equals(val_1)) return false;
+            }else{
+                if (val_1==null) return false;
             }
         }
         return true;
     }
-
+    //如果相比较的两元素存在null认为没有比较关系，返回false
     private boolean gt(Map<String, String> map_1, Map<String, String> map_2) {
         Set<String> keySet_2 = map_2.keySet();
         for (String key:keySet_2){
             String val_1 = map_1.get(key);
             String val_2 = map_2.get(key);
-            if (val_1!=null){
-                try {
-                    float v1 = Float.parseFloat(val_1);
-                    float v2 = Float.parseFloat(val_2);
-                    if (v2<=v1) return false;
-                } catch (NumberFormatException e){
-                    if (val_2.compareTo(val_1)<=0) return false;
-                }
-            }else{
-                return false;
+            if (val_1==null || val_2==null) return false;
+            try {
+                float v1 = Float.parseFloat(val_1);
+                float v2 = Float.parseFloat(val_2);
+                if (v2>=v1) return false;
+            } catch (NumberFormatException e){
+                if (val_2.compareTo(val_1)>=0) return false;
             }
         }
         return true;
     }
-
+    //如果相比较的两元素存在null认为没有比较关系，返回false
     private boolean lt(Map<String, String> map_1, Map<String, String> map_2) {
         Set<String> keySet_2 = map_2.keySet();
         for (String key:keySet_2){
             String val_1 = map_1.get(key);
             String val_2 = map_2.get(key);
-            if (val_1!=null){
-                try {
-                    float v1 = Float.parseFloat(val_1);
-                    float v2 = Float.parseFloat(val_2);
-                    if (v2>=v1) return false;
-                } catch (NumberFormatException e){
-                    if (val_2.compareTo(val_1)>=0) return false;
-                }
-            }else{
-                return false;
+            if (val_1==null || val_2==null) return false;
+            try {
+                float v1 = Float.parseFloat(val_1);
+                float v2 = Float.parseFloat(val_2);
+                if (v2<=v1) return false;
+            } catch (NumberFormatException e){
+                if (val_2.compareTo(val_1)<=0) return false;
             }
         }
         return true;
     }
-
+    //如果相比较的两元素存在null认为没有比较关系，返回false
     private boolean gte(Map<String, String> map_1, Map<String, String> map_2) {
         Set<String> keySet_2 = map_2.keySet();
         for (String key:keySet_2){
             String val_1 = map_1.get(key);
             String val_2 = map_2.get(key);
-            if (val_1!=null){
-                try {
-                    float v1 = Float.parseFloat(val_1);
-                    float v2 = Float.parseFloat(val_2);
-                    if (v2<v1) return false;
-                } catch (NumberFormatException e){
-                    if (val_2.compareTo(val_1)<0) return false;
-                }
-            }else{
-                return false;
+            if (val_1==null || val_2==null) return false;
+            try {
+                float v1 = Float.parseFloat(val_1);
+                float v2 = Float.parseFloat(val_2);
+                if (v2>v1) return false;
+            } catch (NumberFormatException e){
+                if (val_2.compareTo(val_1)>0) return false;
             }
         }
         return true;
     }
-
+    //如果元素存在null认为没有比较关系，返回false
     private boolean lte(Map<String, String> map_1, Map<String, String> map_2) {
         Set<String> keySet_2 = map_2.keySet();
         for (String key:keySet_2){
             String val_1 = map_1.get(key);
             String val_2 = map_2.get(key);
-            if (val_1!=null){
-                try {
-                    float v1 = Float.parseFloat(val_1);
-                    float v2 = Float.parseFloat(val_2);
-                    if (v2>v1) return false;
-                } catch (NumberFormatException e){
-                    if (val_2.compareTo(val_1)>0) return false;
-                }
-            }else{
+            if (val_1==null || val_2==null) return false;
+            try {
+                float v1 = Float.parseFloat(val_1);
+                float v2 = Float.parseFloat(val_2);
+                if (v2<v1) return false;
+            } catch (NumberFormatException e){
+                if (val_2.compareTo(val_1)<0) return false;
+            }
+        }
+        return true;
+    }
+    //如果相比较的两元素存在null认为没有比较关系，返回false
+    private boolean match(Map<String, String> map_1, Map<String, String> map_2) {
+        Set<String> keySet_2 = map_2.keySet();
+        for (String key:keySet_2){
+            String val_2 = map_2.get(key);
+            String val_1 = map_1.get(key);
+            if (val_1==null || val_2==null) return false;
+            if (!val_1.matches(val_2)) return false;
+        }
+        return true;
+    }
+    private boolean in(Map<String, String> map_1, Map<String, Collection<String>> map_2){
+        Set<String> keySet_2 = map_2.keySet();
+        for (String key:keySet_2){
+            Collection<String> val_2 = map_2.get(key);
+            if (val_2!=null){
+                if (!val_2.contains(map_1.get(key))) return false;
+            } else {
                 return false;
+            }
+        }
+        return true;
+    }
+    private boolean notIn(Map<String, String> map_1, Map<String, Collection<String>> map_2){
+        Set<String> keySet_2 = map_2.keySet();
+        for (String key:keySet_2){
+            Collection<String> val_2 = map_2.get(key);
+            if (val_2!=null){
+                if (val_2.contains(map_1.get(key))) return false;
             }
         }
         return true;
