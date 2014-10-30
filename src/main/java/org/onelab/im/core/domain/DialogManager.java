@@ -144,182 +144,146 @@ public class DialogManager {
     }
 
     private boolean checkCondition(Condition condition, Map<String, String> dialogInfo) {
-        Map<String,String> eq = condition.getEq();
-        Map<String,String> nq = condition.getNq();
-        Map<String,String> gt = condition.getGt();
-        Map<String,String> lt = condition.getLt();
-        Map<String,String> gte = condition.getGte();
-        Map<String,String> lte = condition.getLte();
-        Map<String,String> match = condition.getMatch();
-
-        Map<String,Collection<String>> in = condition.getIn();
-        Map<String,Collection<String>> notIn = condition.getNotIn();
-
         boolean res = true;
-        if (eq!=null && !eq.isEmpty()){
-            res = eq(dialogInfo, eq);
-        }
-        if (res && nq!=null && !nq.isEmpty()){
-            res = nq(dialogInfo, nq);
-        }
-        if (res && gt!=null && !gt.isEmpty()){
-            res = gt(dialogInfo, gt);
-        }
-        if (res && lt!=null && !lt.isEmpty()){
-            res = lt(dialogInfo, lt);
-        }
-        if (res && lte!=null && !lte.isEmpty()){
-            res = lte(dialogInfo, lte);
-        }
-        if (res && gte!=null && !gte.isEmpty()){
-            res = gte(dialogInfo, gte);
-        }
-        if (res && match!=null && !match.isEmpty()){
-            res = match(dialogInfo, match);
-        }
-        if (res && in!=null && !in.isEmpty()){
-            res = in(dialogInfo, in);
-        }
-        if (res && notIn!=null && !notIn.isEmpty()){
-            res = notIn(dialogInfo, notIn);
+        switch (condition.getOperator()){
+            case EQ:
+                res = eq(dialogInfo,condition);
+                break;
+            case NQ:
+                res = nq(dialogInfo, condition);
+                break;
+            case GT:
+                res = gt(dialogInfo, condition);
+                break;
+            case LT:
+                res = lt(dialogInfo, condition);
+                break;
+            case GTE:
+                res = gte(dialogInfo, condition);
+                break;
+            case LTE:
+                res = lte(dialogInfo, condition);
+                break;
+            case MATCH:
+                res = match(dialogInfo, condition);
+                break;
+            case IN:
+                res = in(dialogInfo, condition);
+                break;
+            case NOT_IN:
+                res = notIn(dialogInfo, condition);
+                break;
         }
         Condition and = condition.getAnd();
-        if (res && and!=null && !and.isEmpty()){
-            res = checkCondition(and,dialogInfo);
+        if (res && and!=null){
+            res = checkCondition(and, dialogInfo);
         }
         Condition or = condition.getOr();
-        if (!res && or!=null && !or.isEmpty()){
-            res = checkCondition(or,dialogInfo);
+        if (!res && or!=null){
+            res = checkCondition(or, dialogInfo);
         }
         return res;
     }
 
     //如果相比较的两元素同为null认为相等
-    private boolean eq(Map<String, String> map_1, Map<String, String> map_2) {
-        Set<String> keySet_2 = map_2.keySet();
-        for (String key:keySet_2){
-            String val_2 = map_2.get(key);
-            String val_1 = map_1.get(key);
-            if (val_2!=null){
-                if (!val_2.equals(val_1)) return false;
-            }else{
-                if (val_1!=null) return false;
-            }
+    private boolean eq(Map<String, String> map, Condition condition) {
+        String val_1 = map.get(condition.getName());
+        String val_2 = condition.getValue();
+        if (val_2!=null){
+            if (!val_2.equals(val_1)) return false;
+        }else{
+            if (val_1!=null) return false;
         }
         return true;
     }
     //如果相比较的两元素同为null认为相等
-    private boolean nq(Map<String, String> map_1, Map<String, String> map_2) {
-        Set<String> keySet_2 = map_2.keySet();
-        for (String key:keySet_2){
-            String val_2 = map_2.get(key);
-            String val_1 = map_1.get(key);
-            if (val_2!=null){
-                if (val_2.equals(val_1)) return false;
-            }else{
-                if (val_1==null) return false;
-            }
+    private boolean nq(Map<String, String> map, Condition condition) {
+        String val_1 = map.get(condition.getName());
+        String val_2 = condition.getValue();
+        if (val_2!=null){
+            if (val_2.equals(val_1)) return false;
+        }else{
+            if (val_1==null) return false;
         }
         return true;
     }
     //如果相比较的两元素存在null认为没有比较关系，返回false
-    private boolean gt(Map<String, String> map_1, Map<String, String> map_2) {
-        Set<String> keySet_2 = map_2.keySet();
-        for (String key:keySet_2){
-            String val_1 = map_1.get(key);
-            String val_2 = map_2.get(key);
-            if (val_1==null || val_2==null) return false;
-            try {
-                float v1 = Float.parseFloat(val_1);
-                float v2 = Float.parseFloat(val_2);
-                if (v2>=v1) return false;
-            } catch (NumberFormatException e){
-                if (val_2.compareTo(val_1)>=0) return false;
-            }
+    private boolean gt(Map<String, String> map, Condition condition) {
+        String val_1 = map.get(condition.getName());
+        String val_2 = condition.getValue();
+        if (val_1==null || val_2==null) return false;
+        try {
+            float v1 = Float.parseFloat(val_1);
+            float v2 = Float.parseFloat(val_2);
+            if (v2>=v1) return false;
+        } catch (NumberFormatException e){
+            if (val_2.compareTo(val_1)>=0) return false;
         }
         return true;
     }
     //如果相比较的两元素存在null认为没有比较关系，返回false
-    private boolean lt(Map<String, String> map_1, Map<String, String> map_2) {
-        Set<String> keySet_2 = map_2.keySet();
-        for (String key:keySet_2){
-            String val_1 = map_1.get(key);
-            String val_2 = map_2.get(key);
-            if (val_1==null || val_2==null) return false;
-            try {
-                float v1 = Float.parseFloat(val_1);
-                float v2 = Float.parseFloat(val_2);
-                if (v2<=v1) return false;
-            } catch (NumberFormatException e){
-                if (val_2.compareTo(val_1)<=0) return false;
-            }
+    private boolean lt(Map<String, String> map, Condition condition) {
+        String val_1 = map.get(condition.getName());
+        String val_2 = condition.getValue();
+        if (val_1==null || val_2==null) return false;
+        try {
+            float v1 = Float.parseFloat(val_1);
+            float v2 = Float.parseFloat(val_2);
+            if (v2<=v1) return false;
+        } catch (NumberFormatException e){
+            if (val_2.compareTo(val_1)<=0) return false;
         }
         return true;
     }
     //如果相比较的两元素存在null认为没有比较关系，返回false
-    private boolean gte(Map<String, String> map_1, Map<String, String> map_2) {
-        Set<String> keySet_2 = map_2.keySet();
-        for (String key:keySet_2){
-            String val_1 = map_1.get(key);
-            String val_2 = map_2.get(key);
-            if (val_1==null || val_2==null) return false;
-            try {
-                float v1 = Float.parseFloat(val_1);
-                float v2 = Float.parseFloat(val_2);
-                if (v2>v1) return false;
-            } catch (NumberFormatException e){
-                if (val_2.compareTo(val_1)>0) return false;
-            }
+    private boolean gte(Map<String, String> map, Condition condition) {
+        String val_1 = map.get(condition.getName());
+        String val_2 = condition.getValue();
+        if (val_1==null || val_2==null) return false;
+        try {
+            float v1 = Float.parseFloat(val_1);
+            float v2 = Float.parseFloat(val_2);
+            if (v2>v1) return false;
+        } catch (NumberFormatException e){
+            if (val_2.compareTo(val_1)>0) return false;
         }
         return true;
     }
     //如果元素存在null认为没有比较关系，返回false
-    private boolean lte(Map<String, String> map_1, Map<String, String> map_2) {
-        Set<String> keySet_2 = map_2.keySet();
-        for (String key:keySet_2){
-            String val_1 = map_1.get(key);
-            String val_2 = map_2.get(key);
-            if (val_1==null || val_2==null) return false;
-            try {
-                float v1 = Float.parseFloat(val_1);
-                float v2 = Float.parseFloat(val_2);
-                if (v2<v1) return false;
-            } catch (NumberFormatException e){
-                if (val_2.compareTo(val_1)<0) return false;
-            }
+    private boolean lte(Map<String, String> map, Condition condition) {
+        String val_1 = map.get(condition.getName());
+        String val_2 = condition.getValue();
+        if (val_1==null || val_2==null) return false;
+        try {
+            float v1 = Float.parseFloat(val_1);
+            float v2 = Float.parseFloat(val_2);
+            if (v2<v1) return false;
+        } catch (NumberFormatException e){
+            if (val_2.compareTo(val_1)<0) return false;
         }
         return true;
     }
     //如果相比较的两元素存在null认为没有比较关系，返回false
-    private boolean match(Map<String, String> map_1, Map<String, String> map_2) {
-        Set<String> keySet_2 = map_2.keySet();
-        for (String key:keySet_2){
-            String val_2 = map_2.get(key);
-            String val_1 = map_1.get(key);
-            if (val_1==null || val_2==null) return false;
-            if (!val_1.matches(val_2)) return false;
+    private boolean match(Map<String, String> map, Condition condition) {
+        String val_1 = map.get(condition.getName());
+        String val_2 = condition.getValue();
+        if (val_1==null || val_2==null) return false;
+        if (!val_1.matches(val_2)) return false;
+        return true;
+    }
+    private boolean in(Map<String, String> map, Condition condition){
+        Collection<String> val_2 = condition.getValues();
+        if (val_2!=null){
+            if (!val_2.contains(map.get(condition.getName()))) return false;
+        } else {
+            return false;
         }
         return true;
     }
-    private boolean in(Map<String, String> map_1, Map<String, Collection<String>> map_2){
-        Set<String> keySet_2 = map_2.keySet();
-        for (String key:keySet_2){
-            Collection<String> val_2 = map_2.get(key);
-            if (val_2!=null){
-                if (!val_2.contains(map_1.get(key))) return false;
-            } else {
-                return false;
-            }
-        }
-        return true;
-    }
-    private boolean notIn(Map<String, String> map_1, Map<String, Collection<String>> map_2){
-        Set<String> keySet_2 = map_2.keySet();
-        for (String key:keySet_2){
-            Collection<String> val_2 = map_2.get(key);
-            if (val_2!=null){
-                if (val_2.contains(map_1.get(key))) return false;
-            }
+    private boolean notIn(Map<String, String> map, Condition condition){
+        Collection<String> val_2 = condition.getValues();
+        if (val_2!=null){
+            if (val_2.contains(map.get(condition.getName()))) return false;
         }
         return true;
     }
