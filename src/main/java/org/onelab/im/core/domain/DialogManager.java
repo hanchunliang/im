@@ -3,7 +3,6 @@ package org.onelab.im.core.domain;
 import org.onelab.im.core.Condition;
 import org.onelab.im.core.DialogPanel;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 /**
