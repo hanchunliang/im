@@ -37,13 +37,13 @@ public class Validator {
                     res = lte(data, condition);
                     break;
                 case MT:
-                    res = match(data, condition);
+                    res = mt(data, condition);
                     break;
                 case IN:
                     res = in(data, condition);
                     break;
                 case NI:
-                    res = notIn(data, condition);
+                    res = ni(data, condition);
                     break;
             }
         }
@@ -142,7 +142,7 @@ public class Validator {
         return true;
     }
     //如果相比较的两元素存在null认为没有比较关系，返回false
-    private static boolean match(Map<String, String> map, Condition condition) {
+    private static boolean mt(Map<String, String> map, Condition condition) {
         String val_1 = map.get(condition.getName());
         String val_2 = condition.getValue();
         if (val_1==null || val_2==null) return false;
@@ -158,7 +158,7 @@ public class Validator {
         }
         return true;
     }
-    private static boolean notIn(Map<String, String> map, Condition condition){
+    private static boolean ni(Map<String, String> map, Condition condition){
         Collection<String> val_2 = condition.getValues();
         if (val_2!=null){
             if (val_2.contains(map.get(condition.getName()))) return false;
