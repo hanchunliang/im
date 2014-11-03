@@ -9,7 +9,7 @@ import java.util.*;
 public class Condition {
 
     public static enum Operator {
-        EQ,NE,GT,LT,GE,LE,MT,IN,NI,NONE
+        EQ,NE,GT,LT,GE,LE,MT,IN,NI
     }
 
     private Operator operator;
@@ -23,9 +23,7 @@ public class Condition {
 
     private Condition parent ;
 
-    public Condition(){
-        this.operator = Operator.NONE;
-    }
+    public Condition(){}
 
     public Condition(Operator operator,String name,String value){
         assert operator !=null;
@@ -42,7 +40,7 @@ public class Condition {
         this.values = values;
     }
     public boolean isEmpty(){
-        if (this.operator!=Operator.NONE || this.and!=null || this.or!=null) {
+        if (this.operator!=null || this.and!=null || this.or!=null) {
             return false;
         }
         return true;

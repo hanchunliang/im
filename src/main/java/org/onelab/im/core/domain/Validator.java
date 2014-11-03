@@ -16,34 +16,36 @@ public class Validator {
 
     public static boolean validate(Condition condition,Map<String,String> data){
         boolean res = true;
-        switch (condition.getOperator()){
-            case EQ:
-                res = eq(data,condition);
-                break;
-            case NE:
-                res = nq(data, condition);
-                break;
-            case GT:
-                res = gt(data, condition);
-                break;
-            case LT:
-                res = lt(data, condition);
-                break;
-            case GE:
-                res = gte(data, condition);
-                break;
-            case LE:
-                res = lte(data, condition);
-                break;
-            case MT:
-                res = match(data, condition);
-                break;
-            case IN:
-                res = in(data, condition);
-                break;
-            case NI:
-                res = notIn(data, condition);
-                break;
+        if(condition.getOperator()!=null){
+            switch (condition.getOperator()){
+                case EQ:
+                    res = eq(data,condition);
+                    break;
+                case NE:
+                    res = nq(data, condition);
+                    break;
+                case GT:
+                    res = gt(data, condition);
+                    break;
+                case LT:
+                    res = lt(data, condition);
+                    break;
+                case GE:
+                    res = gte(data, condition);
+                    break;
+                case LE:
+                    res = lte(data, condition);
+                    break;
+                case MT:
+                    res = match(data, condition);
+                    break;
+                case IN:
+                    res = in(data, condition);
+                    break;
+                case NI:
+                    res = notIn(data, condition);
+                    break;
+            }
         }
         List<Condition> and = condition.getAnd();
         if (res && and!=null){
