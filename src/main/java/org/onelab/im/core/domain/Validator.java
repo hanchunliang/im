@@ -29,10 +29,10 @@ public class Validator {
             case LT:
                 res = lt(data, condition);
                 break;
-            case GTE:
+            case GE:
                 res = gte(data, condition);
                 break;
-            case LTE:
+            case LE:
                 res = lte(data, condition);
                 break;
             case MATCH:

@@ -9,7 +9,7 @@ import java.util.*;
 public class Condition {
 
     public static enum Operator {
-        EQ,NQ,GT,LT,GTE,LTE,MATCH,IN,NOT_IN,NONE
+        EQ,NQ,GT,LT,GE,LE,MATCH,IN,NOT_IN,NONE
     }
 
     private Operator operator;
