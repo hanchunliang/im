@@ -20,7 +20,7 @@ public class Validator {
             case EQ:
                 res = eq(data,condition);
                 break;
-            case NQ:
+            case NE:
                 res = nq(data, condition);
                 break;
             case GT:
@@ -35,13 +35,13 @@ public class Validator {
             case LE:
                 res = lte(data, condition);
                 break;
-            case MATCH:
+            case MT:
                 res = match(data, condition);
                 break;
             case IN:
                 res = in(data, condition);
                 break;
-            case NOT_IN:
+            case NI:
                 res = notIn(data, condition);
                 break;
         }
