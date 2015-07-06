@@ -16,7 +16,6 @@ public class DialogCache implements DialogCacheInterface {
     private final String key_info = "info";
     private final String key_msg = "msg";
 
-    @Override
     public void cache(String group, String dialogId, Map<String, String> dialogInfo) {
         Map<String,Map> groupMap = cache.get(group);
         if (groupMap==null) {
@@ -34,7 +33,6 @@ public class DialogCache implements DialogCacheInterface {
         groupMap.put(dialogId,dialogMap);
     }
 
-    @Override
     public boolean exist(String group, String dialogId){
         Map<String,Map> groupMap = cache.get(group);
         if (groupMap!=null){
@@ -43,7 +41,6 @@ public class DialogCache implements DialogCacheInterface {
         return false;
     }
 
-    @Override
     public void updateDialogInfo(String group, String dialogId, Map<String, String> dialogInfo) {
         Map<String, String> info = dialogInfo(group,dialogId);
         if (info!=null){
@@ -53,7 +50,6 @@ public class DialogCache implements DialogCacheInterface {
         }
     }
 
-    @Override
     public Map<String, String> dialogInfo(String group, String dialogId) {
         Map<String,Map> groupMap = cache.get(group);
         Map<String, String> dialogInfo = null;
@@ -66,7 +62,6 @@ public class DialogCache implements DialogCacheInterface {
         return dialogInfo;
     }
 
-    @Override
     public Map<String, Map<String, String>> dialogInfoMap(String group) {
         Map<String,Map> groupMap = cache.get(group);
         Map<String,Map<String,String>> res = null;
@@ -80,7 +75,6 @@ public class DialogCache implements DialogCacheInterface {
         return res;
     }
 
-    @Override
     public List<Message> read(String group, String dialogId) {
         Map<String,Map> groupMap = cache.get(group);
         if (groupMap!=null) {
@@ -92,7 +86,6 @@ public class DialogCache implements DialogCacheInterface {
         return null;
     }
 
-    @Override
     public void write(String group, String dialogId, Message message) {
         Message m = new Message(message);
         Map<String,Map> groupMap = cache.get(group);
@@ -108,12 +101,10 @@ public class DialogCache implements DialogCacheInterface {
         }
     }
 
-    @Override
     public List<String> groups() {
         return new ArrayList<String>(cache.keySet());
     }
 
-    @Override
     public List<String> dialogIds(String group) {
         Map<String,Map> dialogMap = cache.get(group);
         if (dialogMap!=null){
@@ -122,12 +113,10 @@ public class DialogCache implements DialogCacheInterface {
         return null;
     }
 
-    @Override
     public void remove(String group) {
         cache.remove(group);
     }
 
-    @Override
     public void remove(String group, String dialogId) {
         Map dialog = cache.get(group);
         if (dialog!=null){

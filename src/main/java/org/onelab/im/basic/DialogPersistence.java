@@ -9,11 +9,10 @@ import java.util.List;
  * Created by chunliangh on 14-10-21.
  */
 public class DialogPersistence implements DialogPersistenceInterface {
-    @Override
+
     public void persist(Dialog dialog) {
     }
 
-    @Override
     public void persist(List<Dialog> dialogs) {
     }
 }

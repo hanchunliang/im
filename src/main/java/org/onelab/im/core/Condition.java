@@ -8,7 +8,7 @@ import java.util.*;
  */
 public class Condition {
 
-    public static enum Operator {
+    public enum Operator {
         EQ,NE,GT,LT,GE,LE,MT,IN,NI
     }
 
