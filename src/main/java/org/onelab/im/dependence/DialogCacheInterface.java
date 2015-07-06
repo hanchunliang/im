@@ -1,7 +1,5 @@
 package org.onelab.im.dependence;
 
-import org.onelab.im.core.domain.Message;
-
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +7,7 @@ import java.util.Map;
  * 对话缓存接口，需外部注入。
  * Created by chunliangh on 14-10-20.
  */
-public interface DialogCacheInterface {
+public interface DialogCacheInterface extends MessageTransferInterface{
 
     /**
      * 缓存给定对话的信息
@@ -49,22 +47,6 @@ public interface DialogCacheInterface {
      * @return <dialogId,dialogInfo> [如果不存在给定对话组,返回null]
      */
     Map<String,Map<String,String>> dialogInfoMap(String group);
-
-    /**
-     * 读取给定对话的消息
-     * @param group 对话组
-     * @param dialogId 对话ID
-     * @return 给定对话的所有消息 [如果不存在给定对话对话,返回null]
-     */
-    List<Message> read(String group,String dialogId);
-
-    /**
-     * 向给定对话添加消息
-     * @param group 对话组
-     * @param dialogId 对话ID
-     * @param message 消息
-     */
-    void write(String group,String dialogId,Message message);
 
     /**
      * 获取所有对话组
